@@ -16,11 +16,11 @@ public class Labirinto {
 			if(i==0 || i==altura-1)
 			{
 				for(int j = 0; j<comprimento; j++)
-					labirinto[i][j]=new Parede(i,j);
+					labirinto[i][j]=new Parede();
 			}
 			else {
-				labirinto[i][0] = new Parede(i,0);
-				labirinto[i][comprimento-1] = new Parede(i,comprimento-1);
+				labirinto[i][0] = new Parede();
+				labirinto[i][comprimento-1] = new Parede();
 			}
 		}
 		
@@ -31,13 +31,17 @@ public class Labirinto {
 		criarParedes(6,5,7,5);
 		criarParedes(2,7,7,7);
 		
+		//criar heroi, dragao e espada
+		labirinto[1][1]=new Heroi();
+		labirinto[3][1]=new Dragao();
+		labirinto[8][1]=new Espada();
 	}
 	
 	public void criarParedes(int alt1, int comp1, int alt2, int comp2)
 	{
 		for(int i = alt1; i <= alt2; i++)
 			for(int j = comp1; j <= comp2; j++)
-				labirinto[i][j] = new Parede(i,j);
+				labirinto[i][j] = new Parede();
 	}
 	
 	public void display()

@@ -1,12 +1,10 @@
 
-public class Parede extends Geral {
+public class Parede extends Geral{
 	
-	
+	char simbolo;
 
-	public Parede(int x, int y)
+	public Parede()
 	{
-		super.x=x;
-		super.y=y;
 		super.simbolo = 'X';
 	}
 	
