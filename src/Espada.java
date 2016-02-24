@@ -1,8 +1,8 @@
 
-public class Espada extends Geral {
+public class Espada extends Animado {
 
 	Espada()
 	{
-		super.simbolo='E';
+		super.setSimbolo('E');
 	}
 }

@@ -1,6 +1,10 @@
 
 public class Geral {
 	
-	char simbolo;
+	private char simbolo;
+	
+	char getSimbolo() {return simbolo;}
+	
+	void setSimbolo(char simbolo) {this.simbolo=simbolo;}
 
 }

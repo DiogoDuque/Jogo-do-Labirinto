@@ -1,8 +1,8 @@
 
-public class Dragao extends Geral {
+public class Dragao extends Animado {
 
 	Dragao()
 	{
-		super.simbolo='D';
+		super.setSimbolo('D');
 	}
 }

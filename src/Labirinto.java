@@ -37,6 +37,10 @@ public class Labirinto {
 		labirinto[8][1]=new Espada();
 	}
 	
+	/**
+	 * Cria varios objetos Parede entre as alturas alt1 e alt2
+	 * e os comprimentos comp1 e comp2
+	 */
 	public void criarParedes(int alt1, int comp1, int alt2, int comp2)
 	{
 		for(int i = alt1; i <= alt2; i++)
@@ -44,6 +48,9 @@ public class Labirinto {
 				labirinto[i][j] = new Parede();
 	}
 	
+	/**
+	 * Mostra o labirinto e o seu conteudo
+	 */
 	public void display()
 	{
 		for(int i=0; i<altura; i++)
@@ -52,9 +59,33 @@ public class Labirinto {
 			{
 				if(labirinto[i][j]==null)
 					System.out.print(" ");
-				else System.out.print(labirinto[i][j].simbolo);
+				else System.out.print(labirinto[i][j].getSimbolo());
 			}
 			System.out.println();
+		}
+	}
+	
+	/**
+	 * [Incompleta] Atualiza a posicao de acordo com a direcao recebida,
+	 * caso seja possivel (e nao vá contra uma parede)
+	*/
+	public void updateHeroi(int direcao)
+ {
+		switch (direcao) {
+		case 1: //UP
+			//handle
+			break;
+		case 2: //RIGHT
+			//handle
+			break;
+		case 3: //DOWN
+			//handle
+			break;
+		case 4: //LEFT
+			//handle
+			break;
+		default:
+			break;
 		}
 	}
 }

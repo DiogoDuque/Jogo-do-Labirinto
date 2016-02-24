@@ -1,8 +1,8 @@
 
-public class Heroi extends Geral {
+public class Heroi extends Animado {
 
 	Heroi()
 	{
-		super.simbolo='H';
+		super.setSimbolo('H');
 	}
 }

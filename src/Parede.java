@@ -5,7 +5,7 @@ public class Parede extends Geral{
 
 	public Parede()
 	{
-		super.simbolo = 'X';
+		super.setSimbolo('X');
 	}
 	
 }
