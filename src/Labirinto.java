@@ -1,17 +1,21 @@
 
 public class Labirinto {
 
+	public boolean gameLost;
+	public boolean gameWon;
+	
 	private int altura;
 	private int comprimento;
 	private Geral[][] labirinto;
 	private Heroi heroi;
 	private Dragao dragao;
 	private Espada espada;
+	private Saida saida;
 
 	public Labirinto() {
-		this.altura = 10;
-		this.comprimento = 10;
-		this.labirinto = new Geral[altura][comprimento];
+		altura = 10;
+		comprimento = 10;
+		labirinto = new Geral[altura][comprimento];
 
 		// paredes exteriores
 		for (int i = 0; i < altura; i++) {
@@ -31,13 +35,14 @@ public class Labirinto {
 		criarParedes(6, 5, 7, 5);
 		criarParedes(2, 7, 7, 7);
 
-		// criar heroi, dragao e espada
-		this.heroi = new Heroi(1, 1);
-		this.dragao = new Dragao(1, 3);
-		this.espada = new Espada(1, 8);
-		labirinto[1][1] = this.heroi;
-		labirinto[3][1] = this.dragao;
-		labirinto[8][1] = this.espada;
+		// criar heroi, dragao, espada e saida (a saida nao fica desenhada ainda)
+		heroi = new Heroi(1, 1);
+		dragao = new Dragao(1, 3);
+		espada = new Espada(1, 8);
+		saida = new Saida(9,5);
+		labirinto[1][1] = heroi;
+		labirinto[3][1] = dragao;
+		labirinto[8][1] = espada;
 	}
 
 	public char getHeroiSimbolo() {return heroi.getSimbolo();}
@@ -125,24 +130,53 @@ public class Labirinto {
 	 * Deteta colisoes. Retorna true se houver colisao, falso se nao houver.
 	 */
 	private boolean detecaoColisao(Animado anim, int x, int y) {
+		
+		char animSimbolo = anim.getSimbolo();
+		Geral obj = labirinto[y][x];
+		
 		if (x < 0 || y < 0 || x >= comprimento || y >= altura) // limites do labirinto
 			return true;
 		
-		if (labirinto[y][x] == null) // se é um espaco vazio, pode avancar
+		// se é um espaco vazio, pode avancar
+		if (obj == null)
 			return false;
 
 		// se o heroi vai apanhar a espada
-		if (labirinto[y][x].getSimbolo() == 'E' && anim.getSimbolo() == 'H') {
+		if (obj.getSimbolo() == 'E' && animSimbolo == 'H') {
 			anim.setSimbolo('A');
 			return false;
 		}
 
-		/*/ se for uma parede
-		if (labirinto[y][x].getSimbolo() == 'X')
-			return true;*/
+		//se estiver na saida
+		if(animSimbolo == 'A' && obj.getSimbolo() == 'S')
+		{
+			gameWon=true;
+			return true;
+		}
 		
-		//por enquanto, qualquer outra situacao é colisao
+		//qualquer outra situacao é colisao
 		return true;
 	}
 
+
+	/**
+	 * Deteta se o dragao e o heroi estao adjacentes. Caso estejam, aplicam-se as
+	 * regras do jogo e um deles morre, de acordo com se o heroi possui a espada ou nao.
+	 */
+	public void proximidadeHeroiDragao()
+	{
+		int hX = heroi.getX(), hY = heroi.getY();
+		int dX =dragao.getX(), dY = dragao.getY();
+		int difX = Math.abs(hX-dX), difY = Math.abs(hY-dY);
+		
+		if(difX+difY == 1) //se estiverem adjacentes
+		{
+			if(heroi.getSimbolo() == 'A') { //se estiver armado
+				labirinto[dY][dX] = null; //dragao desaparece
+				labirinto[saida.getY()][saida.getX()] = saida;
+			}
+			else gameLost=true; //senao, heroi morre e jogo acaba
+		}	
+	}
+	
 }
