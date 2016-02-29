@@ -1,4 +1,4 @@
-
+package maze.logic;
 public class Animado extends Geral {
 
 	private int x, y; //permite saber diretamente onde estao os objetos animados

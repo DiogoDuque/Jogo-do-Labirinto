@@ -1,4 +1,4 @@
-
+package maze.logic;
 public class Parede extends Geral{
 	
 	char simbolo;

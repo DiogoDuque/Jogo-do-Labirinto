@@ -1,4 +1,4 @@
-
+package maze.logic;
 public class Dragao extends Animado {
 
 	Dragao(int x, int y)

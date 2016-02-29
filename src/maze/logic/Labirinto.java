@@ -1,9 +1,10 @@
+package maze.logic;
 
 public class Labirinto {
-
 	public boolean gameLost;
 	public boolean gameWon;
-	
+	public boolean dragonKilled;
+
 	private int altura;
 	private int comprimento;
 	private Geral[][] labirinto;
@@ -13,6 +14,9 @@ public class Labirinto {
 	private Saida saida;
 
 	public Labirinto() {
+		gameLost = false;
+		gameWon = false;
+		dragonKilled = false;
 		altura = 10;
 		comprimento = 10;
 		labirinto = new Geral[altura][comprimento];
@@ -35,18 +39,25 @@ public class Labirinto {
 		criarParedes(6, 5, 7, 5);
 		criarParedes(2, 7, 7, 7);
 
-		// criar heroi, dragao, espada e saida (a saida nao fica desenhada ainda)
+		// criar heroi, dragao, espada e saida (a saida nao fica desenhada
+		// ainda)
 		heroi = new Heroi(1, 1);
 		dragao = new Dragao(1, 3);
 		espada = new Espada(1, 8);
-		saida = new Saida(9,5);
-		labirinto[1][1] = heroi;
-		labirinto[3][1] = dragao;
-		labirinto[8][1] = espada;
+		saida = new Saida(9, 5);
+		labirinto[heroi.getY()][heroi.getX()] = heroi;
+		labirinto[dragao.getY()][dragao.getX()] = dragao;
+		labirinto[espada.getY()][espada.getX()] = espada;
 	}
 
-	public char getHeroiSimbolo() {return heroi.getSimbolo();}
-	
+	public char getHeroiSimbolo() {
+		return heroi.getSimbolo();
+	}
+
+	public char getDragaoSimbolo() {
+		return dragao.getSimbolo();
+	}
+
 	/**
 	 * Cria varios objetos Parede entre as alturas alt1 e alt2 e os comprimentos
 	 * comp1 e comp2
@@ -74,26 +85,27 @@ public class Labirinto {
 	}
 
 	/**
-	 * Atualiza a posicao do Animado com o simbolo recebido de
-	 * acordo com a direcao recebida, caso seja possivel (e nao vá contra uma
-	 * parede).
+	 * Atualiza a posicao do Animado com o simbolo recebido de acordo com a
+	 * direcao recebida, caso seja possivel (e nao vá contra uma parede).
 	 */
 	public void updateAnimado(int direcao, char simbolo) {
 		Animado anim;
+
 		if (simbolo == heroi.getSimbolo())
 			anim = heroi;
 		else if (simbolo == dragao.getSimbolo())
 			anim = dragao;
 		else
 			return; // Possivelmente dar erro??
-		
-		int x = anim.getX(), y = anim.getY(); //recolher coordenadas do Animado
+
+		int x = anim.getX(), y = anim.getY(); // recolher coordenadas do Animado
 
 		switch (direcao) {
 		case 2: // UP
 			if (detecaoColisao(anim, x, y - 1))
 				break;
 			anim.setY(y - 1);
+
 			labirinto[y - 1][x] = anim;
 			labirinto[y][x] = null;
 			break;
@@ -102,6 +114,7 @@ public class Labirinto {
 			if (detecaoColisao(anim, x + 1, y))
 				break;
 			anim.setX(x + 1);
+
 			labirinto[y][x + 1] = anim;
 			labirinto[y][x] = null;
 			break;
@@ -110,6 +123,7 @@ public class Labirinto {
 			if (detecaoColisao(anim, x, y + 1))
 				break;
 			anim.setY(y + 1);
+
 			labirinto[y + 1][x] = anim;
 			labirinto[y][x] = null;
 			break;
@@ -118,6 +132,7 @@ public class Labirinto {
 			if (detecaoColisao(anim, x - 1, y))
 				break;
 			anim.setX(x - 1);
+
 			labirinto[y][x - 1] = anim;
 			labirinto[y][x] = null;
 			break;
@@ -130,13 +145,14 @@ public class Labirinto {
 	 * Deteta colisoes. Retorna true se houver colisao, falso se nao houver.
 	 */
 	private boolean detecaoColisao(Animado anim, int x, int y) {
-		
+
 		char animSimbolo = anim.getSimbolo();
 		Geral obj = labirinto[y][x];
-		
-		if (x < 0 || y < 0 || x >= comprimento || y >= altura) // limites do labirinto
+
+		if (x < 0 || y < 0 || x >= comprimento || y >= altura) // limites do
+																// labirinto
 			return true;
-		
+
 		// se é um espaco vazio, pode avancar
 		if (obj == null)
 			return false;
@@ -147,36 +163,98 @@ public class Labirinto {
 			return false;
 		}
 
-		//se estiver na saida
-		if(animSimbolo == 'A' && obj.getSimbolo() == 'S')
-		{
-			gameWon=true;
+		if (obj.getSimbolo() == 'E' && animSimbolo == 'D') {
+			anim.setSimbolo('F');
+			return false;
+		}
+
+		// se estiver na saida
+		if (animSimbolo == 'A' && obj.getSimbolo() == 'S') {
+			gameWon = true;
 			return true;
 		}
-		
-		//qualquer outra situacao é colisao
+
+		// qualquer outra situacao é colisao
 		return true;
 	}
 
-
 	/**
-	 * Deteta se o dragao e o heroi estao adjacentes. Caso estejam, aplicam-se as
-	 * regras do jogo e um deles morre, de acordo com se o heroi possui a espada ou nao.
+	 * Deteta se o dragao e o heroi estao adjacentes. Caso estejam, aplicam-se
+	 * as regras do jogo e um deles morre, de acordo com se o heroi possui a
+	 * espada ou nao.
 	 */
-	public void proximidadeHeroiDragao()
-	{
+	public void proximidadeHeroiDragao() {
 		int hX = heroi.getX(), hY = heroi.getY();
-		int dX =dragao.getX(), dY = dragao.getY();
-		int difX = Math.abs(hX-dX), difY = Math.abs(hY-dY);
-		
-		if(difX+difY == 1) //se estiverem adjacentes
+		int dX = dragao.getX(), dY = dragao.getY();
+		int difX = Math.abs(hX - dX), difY = Math.abs(hY - dY);
+
+		if (difX + difY == 1) // se estiverem adjacentes
 		{
-			if(heroi.getSimbolo() == 'A') { //se estiver armado
-				labirinto[dY][dX] = null; //dragao desaparece
+			if (heroi.getSimbolo() == 'A') { // se estiver armado
+				labirinto[dY][dX] = null; // dragao desaparece
+				dragonKilled=true;
 				labirinto[saida.getY()][saida.getX()] = saida;
-			}
-			else gameLost=true; //senao, heroi morre e jogo acaba
-		}	
+			} else
+				gameLost = true; // senao, heroi morre e jogo acaba
+		}
 	}
-	
+
+	public void updateDragao(int direcao) {
+		Animado anim;
+		Animado anim2;
+		if (dragao.getSimbolo() == 'F') {
+			anim = dragao;
+			int x = anim.getX(), y = anim.getY();
+			espada = new Espada(x, y);
+			anim2 = espada;
+
+			switch (direcao) {
+			case 2: // UP
+				if (detecaoColisao(anim, x, y - 1))
+					break;
+				dragao.setSimbolo('D');
+
+				anim.setY(y - 1);
+
+				labirinto[y - 1][x] = anim;
+				labirinto[y][x] = anim2;
+				break;
+
+			case 6: // RIGHT
+				if (detecaoColisao(anim, x + 1, y))
+					break;
+				dragao.setSimbolo('D');
+				anim.setX(x + 1);
+
+				labirinto[y][x + 1] = anim;
+				labirinto[y][x] = anim2;
+				break;
+
+			case 8: // DOWN
+				if (detecaoColisao(anim, x, y + 1))
+					break;
+				dragao.setSimbolo('D');
+				anim.setY(y + 1);
+
+				labirinto[y + 1][x] = anim;
+				labirinto[y][x] = anim2;
+				break;
+
+			case 4: // LEFT
+				if (detecaoColisao(anim, x - 1, y))
+					break;
+				dragao.setSimbolo('D');
+				anim.setX(x - 1);
+
+				labirinto[y][x - 1] = anim;
+				labirinto[y][x] = anim2;
+				break;
+			default:
+				break;
+			}
+		} else
+			updateAnimado(direcao, dragao.getSimbolo());
+
+	}
+
 }

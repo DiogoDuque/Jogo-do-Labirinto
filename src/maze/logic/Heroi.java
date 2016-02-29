@@ -1,4 +1,4 @@
-
+package maze.logic;
 public class Heroi extends Animado {
 
 	Heroi(int x, int y)
