@@ -1,6 +1,6 @@
 package maze.cli;
 import java.util.Scanner;
-public class main {
+public class Main {
 	
 	public static void main(String[] args) {
 		maze.logic.Maze jogo = new maze.logic.Maze();
@@ -17,7 +17,7 @@ public class main {
 		
 		while(!jogo.gameWon && !jogo.gameLost)
 		{
-			jogo.display();
+			display(jogo.getMaze());
 			int direcao = s.nextInt();
 			jogo.updateAnimado(direcao, jogo.getHeroiSimbolo());
 			if(!jogo.dragonKilled)
@@ -29,7 +29,23 @@ public class main {
 		if(jogo.gameWon)
 			System.out.println("O HEROI CONSEGUIU ESCAPAR!");
 		else System.out.println("O HEROI MORREU...");
-		
+
 	}
 
+	/**
+	 * Mostra o maze e o seu conteudo
+	 */
+	public static void display(maze.logic.Geral[][] maze) {
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				if (maze[i][j] == null)
+					System.out.print(" ");
+				else
+					System.out.print(maze[i][j].getSimbolo());
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+	}
+	
 }
