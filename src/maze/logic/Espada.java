@@ -1,10 +1,10 @@
 package maze.logic;
+import java.awt.Point;
 public class Espada extends Animado {
 
 	Espada(int x, int y)
 	{
 		super.setSimbolo('E');
-		super.setX(x);
-		super.setY(y);
+		super.point(x,y);
 	}
 }

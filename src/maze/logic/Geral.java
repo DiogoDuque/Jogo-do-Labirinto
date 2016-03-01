@@ -1,4 +1,5 @@
 package maze.logic;
+import java.awt.Point;
 public class Geral {
 private char simbolo;
 	
