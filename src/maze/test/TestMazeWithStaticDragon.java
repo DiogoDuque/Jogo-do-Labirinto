@@ -1,7 +1,5 @@
 package maze.test;
 
-import java.awt.Point;
-
 import static org.junit.Assert.*;
 import org.junit.Test;
 import maze.logic.*;

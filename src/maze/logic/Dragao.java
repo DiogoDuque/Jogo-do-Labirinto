@@ -1,7 +1,5 @@
 package maze.logic;
 
-import java.awt.Point;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Dragao extends Animado {

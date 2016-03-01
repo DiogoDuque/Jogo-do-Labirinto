@@ -87,6 +87,10 @@ public class Maze {
 			}
 	}
 
+	public Geral[][] getMaze()
+	{
+		return maze;
+	}
 	
 	public char getHeroiSimbolo() {
 		return heroi.getSimbolo();
@@ -104,13 +108,22 @@ public class Maze {
 	
 	public void moveHeroLeft()
 	{
-		int x = heroi.p.x, y = heroi.p.y;
-		if (detecaoColisao(heroi, x - 1, y))
-			return;
+		updateAnimado(4,'H');
+	}
 
-		maze[y][x - 1] = heroi;
-		maze[y][x] = null;
-		heroi.p.x--;
+	public void moveHeroRight()
+	{
+		updateAnimado(6,'H');
+	}
+
+	public void moveHeroUp()
+	{
+		updateAnimado(2,'H');
+	}
+	
+	public void moveHeroDown()
+	{
+		updateAnimado(8,'H');
 	}
 	
 	/**
@@ -123,21 +136,6 @@ public class Maze {
 				maze[i][j] = new Parede();
 	}
 
-	/**
-	 * Mostra o maze e o seu conteudo
-	 */
-	public void display() {
-		for (int i = 0; i < altura; i++) {
-			for (int j = 0; j < comprimento; j++) {
-				if (maze[i][j] == null)
-					System.out.print(" ");
-				else
-					System.out.print(maze[i][j].getSimbolo());
-				System.out.print(" ");
-			}
-			System.out.println();
-		}
-	}
 
 	/**
 	 * Atualiza a posicao do Animado com o simbolo recebido de acordo com a
@@ -184,12 +182,12 @@ public class Maze {
 			break;
 
 		case 4: // LEFT
-//			if (detecaoColisao(anim, x - 1, y))
-//				break;
-//			anim.setX(x - 1);
-//
-//			maze[y][x - 1] = anim;
-//			maze[y][x] = null;
+			if (detecaoColisao(anim, x - 1, y))
+				break;
+			anim.setX(x - 1);
+
+			maze[y][x - 1] = anim;
+			maze[y][x] = null;
 			break;
 		default:
 			break;
