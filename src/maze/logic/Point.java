@@ -8,4 +8,20 @@ public class Point {
 		this.x=x;
 		this.y=y;
 	};
+
+	public boolean equals(Object obj)
+	{
+		if(obj == this)
+			return true;
+		if(obj == null)
+			return false;
+		if(obj instanceof Point)
+		{
+			Point p = (Point) obj;
+			if(this.x == p.x && this.y == p.y)
+			return true;
+			else return false;
+		}
+		else return false;
+	}
 }
