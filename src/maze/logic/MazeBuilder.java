@@ -1,6 +1,7 @@
 package maze.logic;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MazeBuilder {
@@ -73,8 +74,33 @@ public class MazeBuilder {
 		// gerar labirinto
 		generate();
 		
-		//colocar personagens
+		//colocar outros objetos/personagens
+		ArrayList objs = new ArrayList();
+		objs.add('H');
+		objs.add('D');
+		objs.add('E');
 		
+		while(!objs.isEmpty())
+		{
+			int h = ThreadLocalRandom.current().nextInt(0,height);
+			int w = ThreadLocalRandom.current().nextInt(0,width);
+			
+			if(h<=0 || w<=0 || h>=height-1 || w>=width-1) //se fora dos limites
+				continue;
+			
+			if(objs.size()==1) //se so sobra o heroi
+			{
+				if(maze[h+1][w]=='D'||maze[h-1][w]=='D'||
+						maze[h][w+1]=='D'||maze[h][w-1]=='D') //se dragao perto
+					continue;
+			}
+			
+			if(maze[h][w]==' ')
+			{
+				maze[h][w]=(char)objs.get(objs.size()-1);
+				objs.remove(objs.size()-1);
+			}
+		}
 	}
 
 	// o construtor chama este metodo
