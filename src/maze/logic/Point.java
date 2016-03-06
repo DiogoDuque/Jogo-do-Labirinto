@@ -24,4 +24,10 @@ public class Point {
 		}
 		else return false;
 	}
+
+	public String toString()
+	{
+		String s = "(" + x + ", " + y + ")" ;
+		return s;
+	}
 }

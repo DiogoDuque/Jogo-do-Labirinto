@@ -1,4 +1,5 @@
 package maze.logic;
+
 import java.awt.Point;
 
 public class Maze {
@@ -55,43 +56,39 @@ public class Maze {
 		gameLost = false;
 		gameWon = false;
 		dragonKilled = false;
-		
-		
+
 		altura = novomaze.length;
 		comprimento = novomaze[0].length;
 		maze = new Geral[altura][comprimento];
 
-		for(int i=0; i<altura; i++)
-			for(int j=0; j<comprimento; j++)
-			{
-				switch(novomaze[i][j])
-				{
+		for (int i = 0; i < altura; i++)
+			for (int j = 0; j < comprimento; j++) {
+				switch (novomaze[i][j]) {
 				case ' ':
 					break;
 				case 'X':
 					maze[i][j] = new Parede();
 					break;
 				case 'H':
-					heroi = new Heroi(j,i);
+					heroi = new Heroi(j, i);
 					maze[i][j] = heroi;
 					break;
 				case 'D':
-					dragao = new Dragao(j,i);
+					dragao = new Dragao(j, i);
 					maze[i][j] = dragao;
 					break;
 				case 'E':
-					espada = new Espada(j,i);
+					espada = new Espada(j, i);
 					maze[i][j] = espada;
 					break;
 				}
 			}
 	}
 
-	public Geral[][] getMaze()
-	{
+	public Geral[][] getMaze() {
 		return maze;
 	}
-	
+
 	public char getHeroiSimbolo() {
 		return heroi.getSimbolo();
 	}
@@ -100,32 +97,30 @@ public class Maze {
 		return dragao.getSimbolo();
 	}
 
-	public Dragao getDragao() {return dragao;}
-	
+	public Dragao getDragao() {
+		return dragao;
+	}
+
 	public Point getHeroPosition() {
 		return heroi.p;
 	}
-	
-	public void moveHeroLeft()
-	{
-		updateAnimado(4,'H');
+
+	public void moveHeroLeft() {
+		updateAnimado(4, 'H');
 	}
 
-	public void moveHeroRight()
-	{
-		updateAnimado(6,'H');
+	public void moveHeroRight() {
+		updateAnimado(6, 'H');
 	}
 
-	public void moveHeroUp()
-	{
-		updateAnimado(2,'H');
+	public void moveHeroUp() {
+		updateAnimado(2, 'H');
 	}
-	
-	public void moveHeroDown()
-	{
-		updateAnimado(8,'H');
+
+	public void moveHeroDown() {
+		updateAnimado(8, 'H');
 	}
-	
+
 	/**
 	 * Cria varios objetos Parede entre as alturas alt1 e alt2 e os comprimentos
 	 * comp1 e comp2
@@ -136,13 +131,13 @@ public class Maze {
 				maze[i][j] = new Parede();
 	}
 
-
 	/**
 	 * Atualiza a posicao do Animado com o simbolo recebido de acordo com a
 	 * direcao recebida, caso seja possivel (e nao vá contra uma parede).
 	 */
 	public void updateAnimado(int direcao, char simbolo) {
 		Animado anim;
+		Animado replacer = null;
 
 		if (simbolo == heroi.getSimbolo())
 			anim = heroi;
@@ -153,44 +148,75 @@ public class Maze {
 
 		int x = anim.getX(), y = anim.getY(); // recolher coordenadas do Animado
 
-		switch (direcao) {
-		case 2: // UP
-			if (detecaoColisao(anim, x, y - 1))
+		// se dragao e espada estiverem sobrepostos
+		if (simbolo == 'F') {
+			espada = new Espada(x, y);
+			replacer = espada;
+		}
+		while (direcao != 0) {
+			switch (direcao) {
+			case 2: // UP
+				if (detecaoColisao(anim, x, y - 1)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setY(y - 1);
+
+				maze[y - 1][x] = anim;
+				maze[y][x] = replacer;
 				break;
-			anim.setY(y - 1);
 
-			maze[y - 1][x] = anim;
-			maze[y][x] = null;
-			break;
+			case 6: // RIGHT
+				if (detecaoColisao(anim, x + 1, y)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setX(x + 1);
 
-		case 6: // RIGHT
-			if (detecaoColisao(anim, x + 1, y))
+				maze[y][x + 1] = anim;
+				maze[y][x] = replacer;
 				break;
-			anim.setX(x + 1);
 
-			maze[y][x + 1] = anim;
-			maze[y][x] = null;
-			break;
+			case 8: // DOWN
+				if (detecaoColisao(anim, x, y + 1)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setY(y + 1);
 
-		case 8: // DOWN
-			if (detecaoColisao(anim, x, y + 1))
+				maze[y + 1][x] = anim;
+				maze[y][x] = replacer;
 				break;
-			anim.setY(y + 1);
 
-			maze[y + 1][x] = anim;
-			maze[y][x] = null;
-			break;
+			case 4: // LEFT
+				if (detecaoColisao(anim, x - 1, y)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setX(x - 1);
 
-		case 4: // LEFT
-			if (detecaoColisao(anim, x - 1, y))
+				maze[y][x - 1] = anim;
+				maze[y][x] = replacer;
 				break;
-			anim.setX(x - 1);
-
-			maze[y][x - 1] = anim;
-			maze[y][x] = null;
-			break;
-		default:
-			break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -245,69 +271,11 @@ public class Maze {
 		{
 			if (heroi.getSimbolo() == 'A') { // se estiver armado
 				maze[dY][dX] = null; // dragao desaparece
-				dragonKilled=true;
+				dragonKilled = true;
 				maze[saida.getY()][saida.getX()] = saida;
 			} else if (dragao.getSimbolo() == 'D')
 				gameLost = true; // senao, heroi morre e jogo acaba
 		}
 	}
 
-	public void updateDragao(int direcao) {
-		Animado anim;
-		Animado anim2;
-		if (dragao.getSimbolo() == 'F') {
-			anim = dragao;
-			int x = anim.getX(), y = anim.getY();
-			espada = new Espada(x, y);
-			anim2 = espada;
-
-			switch (direcao) {
-			case 2: // UP
-				if (detecaoColisao(anim, x, y - 1))
-					break;
-				dragao.setSimbolo('D');
-
-				anim.setY(y - 1);
-
-				maze[y - 1][x] = anim;
-				maze[y][x] = anim2;
-				break;
-
-			case 6: // RIGHT
-				if (detecaoColisao(anim, x + 1, y))
-					break;
-				dragao.setSimbolo('D');
-				anim.setX(x + 1);
-
-				maze[y][x + 1] = anim;
-				maze[y][x] = anim2;
-				break;
-
-			case 8: // DOWN
-				if (detecaoColisao(anim, x, y + 1))
-					break;
-				dragao.setSimbolo('D');
-				anim.setY(y + 1);
-
-				maze[y + 1][x] = anim;
-				maze[y][x] = anim2;
-				break;
-
-			case 4: // LEFT
-				if (detecaoColisao(anim, x - 1, y))
-					break;
-				dragao.setSimbolo('D');
-				anim.setX(x - 1);
-
-				maze[y][x - 1] = anim;
-				maze[y][x] = anim2;
-				break;
-			default:
-				break;
-			}
-		} else
-			updateAnimado(direcao, dragao.getSimbolo());
-
-	}
-	
 }

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
 	
 	public static void main(String[] args) {
-		maze.logic.Maze jogo = new maze.logic.Maze();
+		/*maze.logic.Maze jogo = new maze.logic.Maze();
 		Scanner s = new Scanner(System.in);
 		int i =-1;
 		while(i<1 || i>3)
@@ -28,7 +28,9 @@ public class Main {
 		
 		if(jogo.gameWon)
 			System.out.println("O HEROI CONSEGUIU ESCAPAR!");
-		else System.out.println("O HEROI MORREU...");
+		else System.out.println("O HEROI MORREU...");*/
+		maze.logic.MazeBuilder gen = new maze.logic.MazeBuilder(9,9);
+		gen.display();
 
 	}
 

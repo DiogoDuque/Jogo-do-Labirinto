@@ -17,7 +17,7 @@ public class Dragao extends Animado {
 	{	if(dragonFlag == 2)
 		{
 			int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-			jogo.updateDragao(y);
+			jogo.updateAnimado(y,jogo.getDragaoSimbolo());
 			return;
 		}
 			
@@ -35,7 +35,7 @@ public class Dragao extends Animado {
 				break;
 			case 2: //move
 				int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-				jogo.updateDragao(y);
+				jogo.updateAnimado(y,jogo.getDragaoSimbolo());
 				break;
 				
 			}
