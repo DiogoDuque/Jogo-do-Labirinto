@@ -6,7 +6,7 @@ public class Maze {
 	public boolean gameLost;
 	public boolean gameWon;
 	public boolean dragonKilled;
-
+	
 	private int altura;
 	private int comprimento;
 	private Geral[][] maze;
@@ -15,6 +15,11 @@ public class Maze {
 	private Espada espada;
 	private Saida saida;
 
+	public enum Direction
+	{
+		UP, DOWN, LEFT, RIGHT
+	}
+	
 	public Maze() {
 		gameLost = false;
 		gameWon = false;
@@ -121,6 +126,7 @@ public class Maze {
 		updateAnimado(8, 'H');
 	}
 
+	
 	/**
 	 * Cria varios objetos Parede entre as alturas alt1 e alt2 e os comprimentos
 	 * comp1 e comp2

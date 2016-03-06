@@ -29,7 +29,7 @@ public class Main {
 		if(jogo.gameWon)
 			System.out.println("O HEROI CONSEGUIU ESCAPAR!");
 		else System.out.println("O HEROI MORREU...");*/
-		maze.logic.MazeBuilder gen = new maze.logic.MazeBuilder(9,9);
+		maze.logic.MazeBuilder gen = new maze.logic.MazeBuilder(13,13);
 		gen.display();
 
 	}
