@@ -3,10 +3,14 @@ package maze.test;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import maze.logic.*;
+import java.awt.Point;
 
 public class TestMazeWithStaticDragon {
-	char[][] m1 = { { 'X', 'X', 'X', 'X', 'X' }, { 'X', ' ', ' ', 'H', 'S' }, { 'X', ' ', 'X', ' ', 'X' },
-			{ 'X', 'E', ' ', 'D', 'X' }, { 'X', 'X', 'X', 'X', 'X' } };
+	char[][] m1 = { { 'X', 'X', 'X', 'X', 'X' }, 
+			        { 'X', ' ', ' ', 'H', 'S' }, 
+		         	{ 'X', ' ', 'X', ' ', 'X' },
+		         	{ 'X', 'E', ' ', 'D', 'X' },
+		        	{ 'X', 'X', 'X', 'X', 'X' } };
 	@Test //a
 	public void testMoveHeroToFreeCell() {
 		Maze maze = new Maze(m1);

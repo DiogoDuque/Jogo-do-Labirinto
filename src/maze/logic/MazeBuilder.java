@@ -3,6 +3,7 @@ package maze.logic;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.awt.Point;
 
 public class MazeBuilder {
 

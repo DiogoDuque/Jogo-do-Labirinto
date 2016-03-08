@@ -11,6 +11,6 @@ public class TestMazeWithDynamicDragon {
 	@Test //testa se o dragao se moveu para uma localizacao possivel
 	public void TestLegalMoves()
 	{
-		//falta fazer
+		
 	}
 }

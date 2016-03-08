@@ -50,7 +50,7 @@ public class Maze {
 		// ainda)
 		heroi = new Heroi(1, 1);
 		dragao = new Dragao(1, 3);
-		espada = new Espada(1, 8);
+		espada = new Espada(5, 8);
 		saida = new Saida(9, 5);
 		maze[heroi.getY()][heroi.getX()] = heroi;
 		maze[dragao.getY()][dragao.getX()] = dragao;
@@ -74,18 +74,23 @@ public class Maze {
 				case 'X':
 					maze[i][j] = new Parede();
 					break;
+				case 'S':
+					saida = new Saida(i,j);
+					maze[i][j] = saida;
+					break;
 				case 'H':
-					heroi = new Heroi(j, i);
+					heroi = new Heroi(i, j);
 					maze[i][j] = heroi;
 					break;
 				case 'D':
-					dragao = new Dragao(j, i);
+					dragao = new Dragao(i, j);
 					maze[i][j] = dragao;
 					break;
 				case 'E':
-					espada = new Espada(j, i);
+					espada = new Espada(i, j);
 					maze[i][j] = espada;
 					break;
+				
 				}
 			}
 	}
@@ -106,24 +111,27 @@ public class Maze {
 		return dragao;
 	}
 
+	public Heroi getHero() {
+		return heroi;
+	}
 	public Point getHeroPosition() {
 		return heroi.p;
 	}
 
 	public void moveHeroLeft() {
-		updateAnimado(4, 'H');
+		updateAnimado(4, heroi.getSimbolo());
 	}
 
 	public void moveHeroRight() {
-		updateAnimado(6, 'H');
+		updateAnimado(6, heroi.getSimbolo());
 	}
 
 	public void moveHeroUp() {
-		updateAnimado(2, 'H');
+		updateAnimado(2, heroi.getSimbolo());
 	}
 
 	public void moveHeroDown() {
-		updateAnimado(8, 'H');
+		updateAnimado(8, heroi.getSimbolo());
 	}
 
 	
@@ -162,52 +170,7 @@ public class Maze {
 		while (direcao != 0) {
 			switch (direcao) {
 			case 2: // UP
-				if (detecaoColisao(anim, x, y - 1)) {
-					if (anim == heroi)
-						direcao = 0;
-					break;
-				}
-				direcao = 0;
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
-				anim.setY(y - 1);
-
-				maze[y - 1][x] = anim;
-				maze[y][x] = replacer;
-				break;
-
-			case 6: // RIGHT
-				if (detecaoColisao(anim, x + 1, y)) {
-					if (anim == heroi)
-						direcao = 0;
-					break;
-				}
-				direcao = 0;
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
-				anim.setX(x + 1);
-
-				maze[y][x + 1] = anim;
-				maze[y][x] = replacer;
-				break;
-
-			case 8: // DOWN
-				if (detecaoColisao(anim, x, y + 1)) {
-					if (anim == heroi)
-						direcao = 0;
-					break;
-				}
-				direcao = 0;
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
-				anim.setY(y + 1);
-
-				maze[y + 1][x] = anim;
-				maze[y][x] = replacer;
-				break;
-
-			case 4: // LEFT
-				if (detecaoColisao(anim, x - 1, y)) {
+				if (detecaoColisao(anim, x - 1, y )) {
 					if (anim == heroi)
 						direcao = 0;
 					break;
@@ -217,8 +180,53 @@ public class Maze {
 					dragao.setSimbolo('D');
 				anim.setX(x - 1);
 
-				maze[y][x - 1] = anim;
-				maze[y][x] = replacer;
+				maze[x-1][y] = anim;
+				maze[x][y] = replacer;
+				break;
+
+			case 6: // RIGHT
+				if (detecaoColisao(anim, x, y+1)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setY(y + 1);
+
+				maze[x][y+1] = anim;
+				maze[x][y] = replacer;
+				break;
+
+			case 8: // DOWN
+				if (detecaoColisao(anim, x+1, y)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setX(x + 1);
+
+				maze[x + 1][y] = anim;
+				maze[x][y] = replacer;
+				break;
+
+			case 4: // LEFT
+				if (detecaoColisao(anim, x, y-1)) {
+					if (anim == heroi)
+						direcao = 0;
+					break;
+				}
+				direcao = 0;
+				if (simbolo == 'F')
+					dragao.setSimbolo('D');
+				anim.setY(y-1);
+
+				maze[x][y-1] = anim;
+				maze[x][y] = replacer;
 				break;
 			default:
 				break;
@@ -232,9 +240,9 @@ public class Maze {
 	private boolean detecaoColisao(Animado anim, int x, int y) {
 
 		char animSimbolo = anim.getSimbolo();
-		Geral obj = maze[y][x];
+		Geral obj = maze[x][y];
 
-		if (x < 0 || y < 0 || x >= comprimento || y >= altura) // limites do
+		if (x < 0 || y < 0 || y >= comprimento || x >= altura) // limites do
 																// maze
 			return true;
 
