@@ -3,9 +3,6 @@ package maze.logic;
 import java.awt.Point;
 
 public class Maze {
-	public boolean gameLost;
-	public boolean gameWon;
-	public boolean dragonKilled;
 	
 	private int altura;
 	private int comprimento;
@@ -14,16 +11,20 @@ public class Maze {
 	private Dragao dragao;
 	private Espada espada;
 	private Saida saida;
+	private MazeStatus status;
 
 	public enum Direction
 	{
 		UP, DOWN, LEFT, RIGHT
 	}
 	
+	public enum MazeStatus
+	{
+		HeroDied, HeroUnarmed, HeroArmed, DragonDied, Victory
+	}
+	
 	public Maze() {
-		gameLost = false;
-		gameWon = false;
-		dragonKilled = false;
+		status=MazeStatus.HeroUnarmed;
 		altura = 10;
 		comprimento = 10;
 		maze = new Geral[altura][comprimento];
@@ -49,18 +50,16 @@ public class Maze {
 		// criar heroi, dragao, espada e saida (a saida nao fica desenhada
 		// ainda)
 		heroi = new Heroi(1, 1);
-		dragao = new Dragao(1, 3);
-		espada = new Espada(5, 8);
-		saida = new Saida(9, 5);
-		maze[heroi.getY()][heroi.getX()] = heroi;
-		maze[dragao.getY()][dragao.getX()] = dragao;
-		maze[espada.getY()][espada.getX()] = espada;
+		dragao = new Dragao(3, 1);
+		espada = new Espada(8, 1);
+		saida = new Saida(5, 9);
+		maze[heroi.getX()][heroi.getY()] = heroi;
+		maze[dragao.getX()][dragao.getY()] = dragao;
+		maze[espada.getX()][espada.getY()] = espada;
 	}
 
 	public Maze(char[][] novomaze) {
-		gameLost = false;
-		gameWon = false;
-		dragonKilled = false;
+		status=MazeStatus.HeroUnarmed;
 
 		altura = novomaze.length;
 		comprimento = novomaze[0].length;
@@ -99,6 +98,11 @@ public class Maze {
 		return maze;
 	}
 
+	public MazeStatus getStatus()
+	{
+		return status;
+	}
+	
 	public char getHeroiSimbolo() {
 		return heroi.getSimbolo();
 	}
@@ -167,15 +171,11 @@ public class Maze {
 			espada = new Espada(x, y);
 			replacer = espada;
 		}
-		while (direcao != 0) {
+		
 			switch (direcao) {
 			case 2: // UP
-				if (detecaoColisao(anim, x - 1, y )) {
-					if (anim == heroi)
-						direcao = 0;
+				if (detecaoColisao(anim, x - 1, y )) 
 					break;
-				}
-				direcao = 0;
 				if (simbolo == 'F')
 					dragao.setSimbolo('D');
 				anim.setX(x - 1);
@@ -185,12 +185,8 @@ public class Maze {
 				break;
 
 			case 6: // RIGHT
-				if (detecaoColisao(anim, x, y+1)) {
-					if (anim == heroi)
-						direcao = 0;
+				if (detecaoColisao(anim, x, y+1)) 
 					break;
-				}
-				direcao = 0;
 				if (simbolo == 'F')
 					dragao.setSimbolo('D');
 				anim.setY(y + 1);
@@ -200,12 +196,9 @@ public class Maze {
 				break;
 
 			case 8: // DOWN
-				if (detecaoColisao(anim, x+1, y)) {
-					if (anim == heroi)
-						direcao = 0;
+				if (detecaoColisao(anim, x+1, y)) 
+				
 					break;
-				}
-				direcao = 0;
 				if (simbolo == 'F')
 					dragao.setSimbolo('D');
 				anim.setX(x + 1);
@@ -215,12 +208,9 @@ public class Maze {
 				break;
 
 			case 4: // LEFT
-				if (detecaoColisao(anim, x, y-1)) {
-					if (anim == heroi)
-						direcao = 0;
+				if (detecaoColisao(anim, x, y-1))
 					break;
-				}
-				direcao = 0;
+				
 				if (simbolo == 'F')
 					dragao.setSimbolo('D');
 				anim.setY(y-1);
@@ -231,7 +221,7 @@ public class Maze {
 			default:
 				break;
 			}
-		}
+		proximidadeHeroiDragao();
 	}
 
 	/**
@@ -252,6 +242,7 @@ public class Maze {
 
 		// se o heroi vai apanhar a espada
 		if (obj.getSimbolo() == 'E' && animSimbolo == 'H') {
+			status=MazeStatus.HeroArmed;
 			anim.setSimbolo('A');
 			return false;
 		}
@@ -263,7 +254,7 @@ public class Maze {
 
 		// se estiver na saida
 		if (animSimbolo == 'A' && obj.getSimbolo() == 'S') {
-			gameWon = true;
+			status=MazeStatus.Victory;
 			return true;
 		}
 
@@ -283,12 +274,13 @@ public class Maze {
 
 		if (difX + difY == 1) // se estiverem adjacentes
 		{
-			if (heroi.getSimbolo() == 'A') { // se estiver armado
-				maze[dY][dX] = null; // dragao desaparece
-				dragonKilled = true;
-				maze[saida.getY()][saida.getX()] = saida;
+			if (getStatus() == MazeStatus.HeroArmed) { // se estiver armado
+				maze[dX][dY] = null; // dragao desaparece
+				status=MazeStatus.DragonDied;
+				dragao.p = new Point(-1,-1);
+				maze[saida.getX()][saida.getY()] = saida;
 			} else if (dragao.getSimbolo() == 'D')
-				gameLost = true; // senao, heroi morre e jogo acaba
+				status=MazeStatus.HeroDied; // heroi morre e jogo acaba
 		}
 	}
 

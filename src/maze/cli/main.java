@@ -1,9 +1,11 @@
 package maze.cli;
 import java.util.Scanner;
+
+import maze.logic.Maze.MazeStatus;
 public class main {
 	
 	public static void main(String[] args) {
-		/*maze.logic.Maze jogo = new maze.logic.Maze();
+		maze.logic.Maze jogo = new maze.logic.Maze();
 		Scanner s = new Scanner(System.in);
 		int i =-1;
 		while(i<1 || i>3)
@@ -15,23 +17,21 @@ public class main {
 			i=s.nextInt();
 		}
 		
-		while(!jogo.gameWon && !jogo.gameLost)
+		while(jogo.getStatus()!=MazeStatus.HeroDied && jogo.getStatus()!=MazeStatus.Victory)
 		{
 			display(jogo.getMaze());
 			int direcao = s.nextInt();
 			jogo.updateAnimado(direcao, jogo.getHeroiSimbolo());
-			if(!jogo.dragonKilled)
+			if(jogo.getStatus()!=MazeStatus.DragonDied)
 				if(i!=1) //se o dragao tiver movimento ativo
 					jogo.getDragao().mudarEstado(jogo, i);
-				jogo.proximidadeHeroiDragao();
+			
 		}
 		
-		if(jogo.gameWon)
+		if(jogo.getStatus()==MazeStatus.Victory)
 			System.out.println("O HEROI CONSEGUIU ESCAPAR!");
-		else System.out.println("O HEROI MORREU...");*/
-		maze.logic.MazeBuilder gen = new maze.logic.MazeBuilder(13,13);
-		gen.display();
-
+		else System.out.println("O HEROI MORREU...");
+		display(jogo.getMaze());
 	}
 
 	/**

@@ -3,6 +3,8 @@ package maze.test;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import maze.logic.*;
+import maze.logic.Maze.MazeStatus;
+
 import java.awt.Point;
 
 public class TestMazeWithStaticDragon {
@@ -38,7 +40,7 @@ public class TestMazeWithStaticDragon {
 		assertEquals('A',maze.getHeroiSimbolo());
 	}
 	
-	/*@Test //d
+	@Test //d
 	 public void testHeroDies() {
 		Maze maze = new Maze(m1);
 		assertEquals(MazeStatus.HeroUnarmed, maze.getStatus());
@@ -46,7 +48,7 @@ public class TestMazeWithStaticDragon {
 		assertEquals(MazeStatus.HeroDied, maze.getStatus());
 	}//*/
 	
-	/*@Test //e
+	@Test //e
 	public void testKillDragon()
 	{
 		Maze maze = new Maze(m1);
@@ -58,7 +60,7 @@ public class TestMazeWithStaticDragon {
 		assertEquals(MazeStatus.DragonDied, maze.getStatus());
 	}//*/
 	
-	/*@Test //f
+	@Test //f
 	public void testVictory()
 	{
 		Maze maze = new Maze(m1);
