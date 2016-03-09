@@ -37,8 +37,8 @@ public class main {
 			display(jogo.getMaze());
 			int direcao = s.nextInt();
 			jogo.updateAnimado(direcao, jogo.getHeroi());
-			if(jogo.getStatus()!=MazeStatus.DragonDied)
-				if(dragonType != DragonType.Stopped) //se o dragao tiver movimento ativo
+			if(jogo.getStatus()!= MazeStatus.DragonDied && //se o dragao nao estiver morto e
+				dragonType != DragonType.Stopped) 			//se tiver movimento ativo
 					for(int i=0; i<jogo.getDragoesSize(); i++)
 					{
 						jogo.getDragaoIndex(i).mudarEstado(jogo, dragonType);

@@ -7,6 +7,7 @@ import maze.cli.main.DragonType;
 public class Dragao extends Animado {
 
 	boolean acordado;
+	int tryCounter=0; //para impedir que as "tentativas de movimento forcadas" nao dessem loop infinito
 	
 	Dragao(int x, int y)
 	{
@@ -19,7 +20,7 @@ public class Dragao extends Animado {
 	{	if(dragonType == DragonType.RandomMovement)
 		{
 			int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-			jogo.updateAnimado(y,this);
+			jogo.updateAnimado(y,this); //pode mover-se ou nao
 			return;
 		}
 			
@@ -37,7 +38,7 @@ public class Dragao extends Animado {
 				break;
 			case 2: //move
 				int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-				jogo.updateAnimado(y,this);
+				while(!jogo.updateAnimado(y,this) && tryCounter<8) {tryCounter++;} //obrigar o dragao a mover-se
 				break;
 				
 			}

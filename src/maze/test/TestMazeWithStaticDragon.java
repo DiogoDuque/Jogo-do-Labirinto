@@ -13,6 +13,12 @@ public class TestMazeWithStaticDragon {
 		         	{ 'X', ' ', 'X', ' ', 'X' },
 		         	{ 'X', 'E', ' ', 'D', 'X' },
 		        	{ 'X', 'X', 'X', 'X', 'X' } };
+	
+	char[][] m2 = { { 'X', 'X', 'X', 'X', 'X' }, 
+					{ 'X', 'H', ' ', ' ', 'S' }, 
+         			{ 'X', 'E', 'X', ' ', 'X' },
+         			{ 'X', ' ', 'D', 'D', 'X' },
+         			{ 'X', 'X', 'X', 'X', 'X' } };
 	@Test //a
 	public void testMoveHeroToFreeCell() {
 		Maze maze = new Maze(m1);
@@ -37,6 +43,11 @@ public class TestMazeWithStaticDragon {
 			maze.moveHeroLeft();
 		for(int i=0; i<=2; i++)
 			maze.moveHeroDown();
+		assertEquals('A',maze.getHeroi().getSimbolo());
+		assertEquals(MazeStatus.HeroArmed, maze.getStatus());
+		//MAZE 2
+		maze = new Maze(m2);
+		maze.moveHeroDown();
 		assertEquals('A',maze.getHeroi().getSimbolo());
 	}
 	
@@ -97,5 +108,12 @@ public class TestMazeWithStaticDragon {
 		for(int i=0; i<=3; i++)
 			maze.moveHeroRight();
 		assertEquals(new Point(1, 3), maze.getHeroPosition());
+		//MAZE 2
+		maze = new Maze(m2);
+		maze.moveHeroDown();
+		maze.moveHeroUp();
+		for(int i=0; i<3; i++)
+			maze.moveHeroRight();
+		assertEquals(MazeStatus.HeroArmed, maze.getStatus());
 	}
 }

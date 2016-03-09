@@ -112,10 +112,6 @@ public class Maze {
 		return heroi;
 	}
 
-//	public char getDragaoSimbolo() {
-//		return dragao.getSimbolo();
-//	}
-
 	public Dragao getDragaoIndex(int index) {
 		return dragoes.get(index);
 	}
@@ -163,7 +159,7 @@ public class Maze {
 	 * Atualiza a posicao do Animado com o simbolo recebido de acordo com a
 	 * direcao recebida, caso seja possivel (e nao vá contra uma parede).
 	 */
-	public void updateAnimado(int direcao, Animado anim) {
+	public boolean updateAnimado(int direcao, Animado anim) {
 
 		Animado replacer = null;
 
@@ -177,8 +173,12 @@ public class Maze {
 		
 			switch (direcao) {
 			case 2: // UP
-				if (detecaoColisao(anim, x - 1, y )) 
+				if (detecaoColisao(anim, x - 1, y ))
+				{
+					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
 					break;
+					return false; //se for dragao, para assegurar que se move
+				}
 				if (anim.getSimbolo() == 'F')
 					anim.setSimbolo('D');
 				anim.setX(x - 1);
@@ -189,7 +189,11 @@ public class Maze {
 
 			case 6: // RIGHT
 				if (detecaoColisao(anim, x, y+1)) 
+				{
+					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
 					break;
+					return false; //se for dragao, para assegurar que se move
+				}
 				if (anim.getSimbolo() == 'F')
 					anim.setSimbolo('D');
 				anim.setY(y + 1);
@@ -200,8 +204,11 @@ public class Maze {
 
 			case 8: // DOWN
 				if (detecaoColisao(anim, x+1, y)) 
-				
+				{
+					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
 					break;
+					return false; //se for dragao, para assegurar que se move
+				}
 				if (anim.getSimbolo() == 'F')
 					anim.setSimbolo('D');
 				anim.setX(x + 1);
@@ -212,8 +219,11 @@ public class Maze {
 
 			case 4: // LEFT
 				if (detecaoColisao(anim, x, y-1))
+				{
+					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
 					break;
-				
+					return false; //se for dragao, para assegurar que se move
+				}
 				if (anim.getSimbolo() == 'F')
 					anim.setSimbolo('D');
 				anim.setY(y-1);
@@ -225,6 +235,7 @@ public class Maze {
 				break;
 			}
 		proximidadeHeroiDragao();
+		return true;
 	}
 
 	/**
@@ -255,7 +266,7 @@ public class Maze {
 		}
 
 		// se estiver na saida
-		if (animSimbolo == 'A' && obj.getSimbolo() == 'S') {
+		if (status == MazeStatus.DragonDied && obj.getSimbolo() == 'S') {
 			status=MazeStatus.Victory;
 			return true;
 		}
@@ -281,9 +292,12 @@ public class Maze {
 			{
 				if (getStatus() == MazeStatus.HeroArmed) { // se estiver armado
 					maze[dX][dY] = null; // dragao desaparece
-					status=MazeStatus.DragonDied;
-					dragao.p = new Point(-1,-1);
-					maze[saida.getX()][saida.getY()] = saida;
+					dragoes.remove(dragoes.size()-1);
+					if(dragoes.isEmpty())
+					{
+						status=MazeStatus.DragonDied;
+						maze[saida.getX()][saida.getY()] = saida;
+					}
 				} else if (dragao.getSimbolo() == 'D')
 					status=MazeStatus.HeroDied; // heroi morre e jogo acaba
 			}
