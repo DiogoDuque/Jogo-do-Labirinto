@@ -59,7 +59,7 @@ public class MazeBuilder {
 			y--; // reutilizado para criar a guidingCell
 			break;
 		}
-		guidingCell = new Point((y - 1) / 2, (x - 1) / 2);
+		guidingCell = new Point((x - 1) / 2, (y - 1) / 2);
 
 		// criar visitedCells[][]
 		visitedCells = new char[(height - 1) / 2][(width - 1) / 2];
@@ -76,9 +76,16 @@ public class MazeBuilder {
 		generate();
 		
 		//colocar outros objetos/personagens
-		ArrayList objs = new ArrayList();
+		ArrayList objs = new ArrayList<>(); //nao dava para fazer so de char
 		objs.add('H');
-		objs.add('D');
+		
+		int dragonCounter = (height/5)*(width/5);
+		while(dragonCounter!=0)
+		{
+			objs.add('D');
+			dragonCounter--;
+		}
+		
 		objs.add('E');
 		
 		while(!objs.isEmpty())
@@ -104,7 +111,6 @@ public class MazeBuilder {
 		}
 	}
 
-	// o construtor chama este metodo
 	private void generate() {
 		while (!pathHistory.isEmpty()) {			
 			int x = guidingCell.x, y = guidingCell.y;
@@ -137,7 +143,7 @@ public class MazeBuilder {
 				visitedCells[y][x]='+'; //marcar como visitada
 				maze[guidingCell.y+y+1][guidingCell.x+x+1]=' '; //abrir caminho no maze
 				
-				guidingCell = new Point(y,x);
+				guidingCell = new Point(x,y);
 				pathHistory.push(guidingCell);
 			}
 		}
@@ -151,6 +157,11 @@ public class MazeBuilder {
 		return true;
 	}
 
+	public char[][] getMaze()
+	{
+		return maze;
+	}
+	
 	public void displayFull() // so para debugging
 	{
 		System.out.println("");
@@ -182,7 +193,6 @@ public class MazeBuilder {
 		}
 		pathHistory=temp;
 	}
-
 	
 	public void display() // so para debugging
 	{

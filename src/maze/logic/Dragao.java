@@ -2,6 +2,8 @@ package maze.logic;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import maze.cli.main.DragonType;
+
 public class Dragao extends Animado {
 
 	boolean acordado;
@@ -13,11 +15,11 @@ public class Dragao extends Animado {
 		acordado = true;
 	}
 	
-	public void mudarEstado(Maze jogo, int dragonFlag)
-	{	if(dragonFlag == 2)
+	public void mudarEstado(Maze jogo, DragonType dragonType)
+	{	if(dragonType == DragonType.RandomMovement)
 		{
 			int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-			jogo.updateAnimado(y,jogo.getDragaoSimbolo());
+			jogo.updateAnimado(y,this);
 			return;
 		}
 			
@@ -31,11 +33,11 @@ public class Dragao extends Animado {
 				break;
 			case 1: //adormece
 				acordado = false;
-				super.setSimbolo('d');;
+				super.setSimbolo('d');
 				break;
 			case 2: //move
 				int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-				jogo.updateAnimado(y,jogo.getDragaoSimbolo());
+				jogo.updateAnimado(y,this);
 				break;
 				
 			}

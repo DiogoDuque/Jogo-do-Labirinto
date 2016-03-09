@@ -1,6 +1,7 @@
 package maze.logic;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Maze {
 	
@@ -8,7 +9,7 @@ public class Maze {
 	private int comprimento;
 	private Geral[][] maze;
 	private Heroi heroi;
-	private Dragao dragao;
+	private ArrayList<Dragao> dragoes;
 	private Espada espada;
 	private Saida saida;
 	private MazeStatus status;
@@ -50,12 +51,15 @@ public class Maze {
 		// criar heroi, dragao, espada e saida (a saida nao fica desenhada
 		// ainda)
 		heroi = new Heroi(1, 1);
-		dragao = new Dragao(3, 1);
+		Dragao dragao = new Dragao(3, 1);
 		espada = new Espada(8, 1);
 		saida = new Saida(5, 9);
 		maze[heroi.getX()][heroi.getY()] = heroi;
 		maze[dragao.getX()][dragao.getY()] = dragao;
 		maze[espada.getX()][espada.getY()] = espada;
+		
+		dragoes=new ArrayList<Dragao>();
+		dragoes.add(dragao);
 	}
 
 	public Maze(char[][] novomaze) {
@@ -64,7 +68,7 @@ public class Maze {
 		altura = novomaze.length;
 		comprimento = novomaze[0].length;
 		maze = new Geral[altura][comprimento];
-
+		dragoes = new ArrayList<Dragao>();
 		for (int i = 0; i < altura; i++)
 			for (int j = 0; j < comprimento; j++) {
 				switch (novomaze[i][j]) {
@@ -82,8 +86,9 @@ public class Maze {
 					maze[i][j] = heroi;
 					break;
 				case 'D':
-					dragao = new Dragao(i, j);
+					Dragao dragao = new Dragao(i, j);
 					maze[i][j] = dragao;
+					dragoes.add(dragao);
 					break;
 				case 'E':
 					espada = new Espada(i, j);
@@ -103,16 +108,21 @@ public class Maze {
 		return status;
 	}
 	
-	public char getHeroiSimbolo() {
-		return heroi.getSimbolo();
+	public Heroi getHeroi() {
+		return heroi;
 	}
 
-	public char getDragaoSimbolo() {
-		return dragao.getSimbolo();
-	}
+//	public char getDragaoSimbolo() {
+//		return dragao.getSimbolo();
+//	}
 
-	public Dragao getDragao() {
-		return dragao;
+	public Dragao getDragaoIndex(int index) {
+		return dragoes.get(index);
+	}
+	
+	public int getDragoesSize()
+	{
+		return dragoes.size();
 	}
 
 	public Heroi getHero() {
@@ -123,19 +133,19 @@ public class Maze {
 	}
 
 	public void moveHeroLeft() {
-		updateAnimado(4, heroi.getSimbolo());
+		updateAnimado(4, heroi);
 	}
 
 	public void moveHeroRight() {
-		updateAnimado(6, heroi.getSimbolo());
+		updateAnimado(6, heroi);
 	}
 
 	public void moveHeroUp() {
-		updateAnimado(2, heroi.getSimbolo());
+		updateAnimado(2, heroi);
 	}
 
 	public void moveHeroDown() {
-		updateAnimado(8, heroi.getSimbolo());
+		updateAnimado(8, heroi);
 	}
 
 	
@@ -153,21 +163,14 @@ public class Maze {
 	 * Atualiza a posicao do Animado com o simbolo recebido de acordo com a
 	 * direcao recebida, caso seja possivel (e nao vá contra uma parede).
 	 */
-	public void updateAnimado(int direcao, char simbolo) {
-		Animado anim;
-		Animado replacer = null;
+	public void updateAnimado(int direcao, Animado anim) {
 
-		if (simbolo == heroi.getSimbolo())
-			anim = heroi;
-		else if (simbolo == dragao.getSimbolo())
-			anim = dragao;
-		else
-			return; // Possivelmente dar erro??
+		Animado replacer = null;
 
 		int x = anim.getX(), y = anim.getY(); // recolher coordenadas do Animado
 
 		// se dragao e espada estiverem sobrepostos
-		if (simbolo == 'F') {
+		if (anim.getSimbolo() == 'F') {
 			espada = new Espada(x, y);
 			replacer = espada;
 		}
@@ -176,8 +179,8 @@ public class Maze {
 			case 2: // UP
 				if (detecaoColisao(anim, x - 1, y )) 
 					break;
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
+				if (anim.getSimbolo() == 'F')
+					anim.setSimbolo('D');
 				anim.setX(x - 1);
 
 				maze[x-1][y] = anim;
@@ -187,8 +190,8 @@ public class Maze {
 			case 6: // RIGHT
 				if (detecaoColisao(anim, x, y+1)) 
 					break;
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
+				if (anim.getSimbolo() == 'F')
+					anim.setSimbolo('D');
 				anim.setY(y + 1);
 
 				maze[x][y+1] = anim;
@@ -199,8 +202,8 @@ public class Maze {
 				if (detecaoColisao(anim, x+1, y)) 
 				
 					break;
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
+				if (anim.getSimbolo() == 'F')
+					anim.setSimbolo('D');
 				anim.setX(x + 1);
 
 				maze[x + 1][y] = anim;
@@ -211,8 +214,8 @@ public class Maze {
 				if (detecaoColisao(anim, x, y-1))
 					break;
 				
-				if (simbolo == 'F')
-					dragao.setSimbolo('D');
+				if (anim.getSimbolo() == 'F')
+					anim.setSimbolo('D');
 				anim.setY(y-1);
 
 				maze[x][y-1] = anim;
@@ -230,10 +233,9 @@ public class Maze {
 	private boolean detecaoColisao(Animado anim, int x, int y) {
 
 		char animSimbolo = anim.getSimbolo();
-		Geral obj = maze[x][y];
+		Geral obj = maze[x][y]; //objeto na posicao pretendida do maze
 
-		if (x < 0 || y < 0 || y >= comprimento || x >= altura) // limites do
-																// maze
+		if (x < 0 || y < 0 || y >= comprimento || x >= altura) // limites do maze
 			return true;
 
 		// se é um espaco vazio, pode avancar
@@ -268,19 +270,23 @@ public class Maze {
 	 * espada ou nao.
 	 */
 	public void proximidadeHeroiDragao() {
-		int hX = heroi.getX(), hY = heroi.getY();
-		int dX = dragao.getX(), dY = dragao.getY();
-		int difX = Math.abs(hX - dX), difY = Math.abs(hY - dY);
-
-		if (difX + difY == 1) // se estiverem adjacentes
+		for(int i=0; i<dragoes.size(); i++)
 		{
-			if (getStatus() == MazeStatus.HeroArmed) { // se estiver armado
-				maze[dX][dY] = null; // dragao desaparece
-				status=MazeStatus.DragonDied;
-				dragao.p = new Point(-1,-1);
-				maze[saida.getX()][saida.getY()] = saida;
-			} else if (dragao.getSimbolo() == 'D')
-				status=MazeStatus.HeroDied; // heroi morre e jogo acaba
+			Dragao dragao = dragoes.get(i);
+			int hX = heroi.getX(), hY = heroi.getY();
+			int dX = dragao.getX(), dY = dragao.getY();
+			int difX = Math.abs(hX - dX), difY = Math.abs(hY - dY);
+
+			if (difX + difY == 1) // se estiverem adjacentes
+			{
+				if (getStatus() == MazeStatus.HeroArmed) { // se estiver armado
+					maze[dX][dY] = null; // dragao desaparece
+					status=MazeStatus.DragonDied;
+					dragao.p = new Point(-1,-1);
+					maze[saida.getX()][saida.getY()] = saida;
+				} else if (dragao.getSimbolo() == 'D')
+					status=MazeStatus.HeroDied; // heroi morre e jogo acaba
+			}
 		}
 	}
 
