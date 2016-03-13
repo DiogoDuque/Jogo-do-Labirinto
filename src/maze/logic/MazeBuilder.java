@@ -12,9 +12,11 @@ public class MazeBuilder {
 	ArrayDeque<Point> pathHistory;
 	Point guidingCell;
 
-	public MazeBuilder(int height, int width) {
+	public MazeBuilder(int height, int width, int numDragoes) {
 		if ((height & 1) == 0 || (width & 1) == 0)
-			return; // throw
+			return; // throw out of bounds
+		if(numDragoes>(height/5)*(width/5))
+			return; //throw too many dragons
 
 		// inicializar array
 		maze = new char[height][width];
@@ -79,11 +81,10 @@ public class MazeBuilder {
 		ArrayList objs = new ArrayList<>(); //nao dava para fazer so de char
 		objs.add('H');
 		
-		int dragonCounter = (height/5)*(width/5);
-		while(dragonCounter!=0)
+		while(numDragoes!=0)
 		{
 			objs.add('D');
-			dragonCounter--;
+			numDragoes--;
 		}
 		
 		objs.add('E');

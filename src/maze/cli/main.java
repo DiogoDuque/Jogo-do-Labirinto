@@ -2,16 +2,15 @@ package maze.cli;
 import java.util.Scanner;
 
 import maze.logic.Maze.MazeStatus;
-import maze.logic.MazeBuilder;
 public class main {
 	
 	public enum DragonType
 	{
-		Stopped, RandomMovement, SleepingAndRandomMovement
+		Static, RandomMovement, SleepingAndRandomMovement
 	}
 	
 	public static void main(String[] args) {
-		maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(9,11);
+		maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(9,11,2);
 		maze.logic.Maze jogo = new maze.logic.Maze(charMaze.getMaze());
 		Scanner s = new Scanner(System.in);
 		int choice =-1;
@@ -25,7 +24,7 @@ public class main {
 		}
 		DragonType dragonType;
 		if (choice==1)
-			dragonType=DragonType.Stopped;
+			dragonType=DragonType.Static;
 		else if(choice==2)
 			dragonType=DragonType.RandomMovement;
 		else if(choice==3)
@@ -38,7 +37,7 @@ public class main {
 			int direcao = s.nextInt();
 			jogo.updateAnimado(direcao, jogo.getHeroi());
 			if(jogo.getStatus()!= MazeStatus.DragonDied && //se o dragao nao estiver morto e
-				dragonType != DragonType.Stopped) 			//se tiver movimento ativo
+				dragonType != DragonType.Static) 			//se tiver movimento ativo
 					for(int i=0; i<jogo.getDragoesSize(); i++)
 					{
 						jogo.getDragaoIndex(i).mudarEstado(jogo, dragonType);
@@ -49,6 +48,7 @@ public class main {
 		if(jogo.getStatus()==MazeStatus.Victory)
 			System.out.println("O HEROI CONSEGUIU ESCAPAR!");
 		else System.out.println("O HEROI MORREU...");
+		s.close();
 	}
 
 	/**
@@ -65,6 +65,21 @@ public class main {
 			}
 			System.out.println();
 		}
+	}
+	
+	public static String getDisplay(maze.logic.Geral[][] maze) {
+		String disp="";
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				if (maze[i][j] == null)
+					disp += " ";
+				else
+					disp += maze[i][j].getSimbolo();
+				disp += " ";
+			}
+			disp += "\n";
+		}
+		return disp;
 	}
 	
 }
