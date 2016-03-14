@@ -14,6 +14,11 @@ public class Maze {
 	private Saida saida;
 	private MazeStatus status;
 
+	public enum DragonType
+	{
+		Static, RandomMovement, SleepingAndRandomMovement
+	}
+	
 	public enum Direction
 	{
 		UP, DOWN, LEFT, RIGHT
@@ -129,19 +134,19 @@ public class Maze {
 	}
 
 	public void moveHeroLeft() {
-		updateAnimado(4, heroi);
+		updateAnimado(Direction.LEFT, heroi);
 	}
 
 	public void moveHeroRight() {
-		updateAnimado(6, heroi);
+		updateAnimado(Direction.RIGHT, heroi);
 	}
 
 	public void moveHeroUp() {
-		updateAnimado(2, heroi);
+		updateAnimado(Direction.UP, heroi);
 	}
 
 	public void moveHeroDown() {
-		updateAnimado(8, heroi);
+		updateAnimado(Direction.DOWN, heroi);
 	}
 
 	
@@ -159,7 +164,7 @@ public class Maze {
 	 * Atualiza a posicao do Animado com o simbolo recebido de acordo com a
 	 * direcao recebida, caso seja possivel (e nao vá contra uma parede).
 	 */
-	public boolean updateAnimado(int direcao, Animado anim) {
+	public boolean updateAnimado(Direction direcao, Animado anim) {
 
 		Animado replacer = null;
 
@@ -172,7 +177,7 @@ public class Maze {
 		}
 		
 			switch (direcao) {
-			case 2: // UP
+			case UP: // UP
 				if (detecaoColisao(anim, x - 1, y ))
 				{
 					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
@@ -187,7 +192,7 @@ public class Maze {
 				maze[x][y] = replacer;
 				break;
 
-			case 6: // RIGHT
+			case RIGHT: // RIGHT
 				if (detecaoColisao(anim, x, y+1)) 
 				{
 					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
@@ -202,7 +207,7 @@ public class Maze {
 				maze[x][y] = replacer;
 				break;
 
-			case 8: // DOWN
+			case DOWN: // DOWN
 				if (detecaoColisao(anim, x+1, y)) 
 				{
 					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi
@@ -217,7 +222,7 @@ public class Maze {
 				maze[x][y] = replacer;
 				break;
 
-			case 4: // LEFT
+			case LEFT: // LEFT
 				if (detecaoColisao(anim, x, y-1))
 				{
 					if(anim.getSimbolo()=='H' || anim.getSimbolo() == 'A') //se for heroi

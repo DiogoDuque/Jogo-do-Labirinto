@@ -11,13 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import maze.cli.main.DragonType;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+
+import maze.logic.Maze.Direction;
+import maze.logic.Maze.DragonType;
 
 
 public class MainWindow {
@@ -26,6 +28,12 @@ public class MainWindow {
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
+	public static JTextArea mazeWindow;
+	public JLabel lblMessageBox;
+	public JButton btnCima;
+	public JButton btnBaixo;
+	public JButton btnEsquerda;
+	public JButton btnDireita;
 
 	/**
 	 * Launch the application.
@@ -54,6 +62,8 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		final MainWindow obj = this;
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 650, 550);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,21 +105,59 @@ public class MainWindow {
 		frame.getContentPane().add(numDragoes);
 		numDragoes.setColumns(10);
 		
-		JComboBox tipoDragao = new JComboBox();
+		final JComboBox tipoDragao = new JComboBox();
 		tipoDragao.setModel(new DefaultComboBoxModel(DragonType.values()));
 		tipoDragao.setToolTipText("");
 		tipoDragao.setBounds(150, 87, 173, 20);
 		frame.getContentPane().add(tipoDragao);
 		
+		//botoes para as direcoes
+		
+		btnCima = new JButton("CIMA");
+		btnCima.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GameHandler.play(obj,Direction.UP);
+			}
+		});
+		btnCima.setBounds(450, 225, 100, 35);
+		frame.getContentPane().add(btnCima);
+		
+		btnEsquerda = new JButton("ESQUERDA");
+		btnEsquerda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GameHandler.play(obj,Direction.LEFT);
+			}
+		});
+		btnEsquerda.setBounds(390, 270, 100, 35);
+		frame.getContentPane().add(btnEsquerda);
+		
+		btnDireita = new JButton("DIREITA");
+		btnDireita.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GameHandler.play(obj,Direction.RIGHT);
+			}
+		});
+		btnDireita.setBounds(510, 270, 100, 35);
+		frame.getContentPane().add(btnDireita);
+		
+		btnBaixo = new JButton("BAIXO");
+		btnBaixo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GameHandler.play(obj,Direction.DOWN);
+			}
+		});
+		btnBaixo.setBounds(450, 315, 100, 35);
+		frame.getContentPane().add(btnBaixo);
+		
 		//Acoes para o labirinto
 		
-		final JTextArea mazeWindow = new JTextArea();
+		mazeWindow = new JTextArea();
 		mazeWindow.setFont(new Font("Courier New", Font.PLAIN, 13));
 		mazeWindow.setEditable(false);
 		mazeWindow.setBounds(30, 143, 330, 345);
 		frame.getContentPane().add(mazeWindow);
 		
-		final JLabel lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
+		lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
 		lblMessageBox.setVerticalAlignment(SwingConstants.TOP);
 		lblMessageBox.setBounds(400, 409, 189, 69);
 		frame.getContentPane().add(lblMessageBox);
@@ -122,9 +170,14 @@ public class MainWindow {
 				larg=Integer.parseInt(largura.getText());
 				numD=Integer.parseInt(numDragoes.getText());
 				maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
-				maze.logic.Maze objMaze= new maze.logic.Maze(charMaze.getMaze());
-				mazeWindow.setText(maze.cli.main.getDisplay(objMaze.getMaze()));
+				GameHandler.objMaze= new maze.logic.Maze(charMaze.getMaze());
+				GameHandler.dragonType=(DragonType) tipoDragao.getSelectedItem();
+				mazeWindow.setText(maze.cli.Main.getDisplay(GameHandler.objMaze.getMaze()));
 				lblMessageBox.setText("Pode jogar!");
+				btnBaixo.setEnabled(true);
+				btnCima.setEnabled(true);
+				btnEsquerda.setEnabled(true);
+				btnDireita.setEnabled(true);
 			}
 		});
 		btnGerarNovoLabirinto.setBounds(422, 18, 148, 38);
@@ -139,28 +192,5 @@ public class MainWindow {
 		btnTerminarPrograma.setBounds(422, 78, 148, 38);
 		frame.getContentPane().add(btnTerminarPrograma);
 		
-		JButton btnCima = new JButton("CIMA");
-		btnCima.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnCima.setBounds(450, 225, 100, 35);
-		frame.getContentPane().add(btnCima);
-		
-		JButton btnEsquerda = new JButton("ESQUERDA");
-		btnEsquerda.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnEsquerda.setBounds(390, 270, 100, 35);
-		frame.getContentPane().add(btnEsquerda);
-		
-		JButton btnDireita = new JButton("DIREITA");
-		btnDireita.setBounds(510, 270, 100, 35);
-		frame.getContentPane().add(btnDireita);
-		
-		JButton btnBaixo = new JButton("BAIXO");
-		btnBaixo.setBounds(450, 315, 100, 35);
-		frame.getContentPane().add(btnBaixo);
 	}
 }

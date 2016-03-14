@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import org.junit.Test;
 
-import maze.cli.main.DragonType;
+import maze.logic.Maze.DragonType;
 
 import maze.logic.*;
 

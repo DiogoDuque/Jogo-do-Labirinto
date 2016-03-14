@@ -1,13 +1,11 @@
 package maze.logic;
 
 import java.util.concurrent.ThreadLocalRandom;
-
-import maze.cli.main.DragonType;
+import maze.cli.Main;
 
 public class Dragao extends Animado {
 
 	public boolean acordado;
-	int tryCounter=0; //para impedir que as "tentativas de movimento forcadas" nao dessem loop infinito
 	
 	Dragao(int x, int y)
 	{
@@ -16,12 +14,14 @@ public class Dragao extends Animado {
 		acordado = true;
 	}
 	
-	public void mudarEstado(Maze jogo, DragonType dragonType)
-	{	if(dragonType == DragonType.RandomMovement)
+	public void mudarEstado(Maze jogo, Maze.DragonType dragonType)
+	{	
+		int tryCounter=20; //para impedir que as "tentativas de movimento forcadas" nao dessem loop infinito
+		
+		if(dragonType == Maze.DragonType.RandomMovement)
 		{
-			int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-			jogo.updateAnimado(y,this); 
-			while(!jogo.updateAnimado(y,this) && tryCounter<20) {tryCounter++;}
+			int y = 2*ThreadLocalRandom.current().nextInt(1, 4 + 1);
+			while(!jogo.updateAnimado(Main.convertIntToDirection(y),this) && tryCounter<0) {tryCounter--;}
 			//pode mover-se 
 			
 			return;
@@ -39,8 +39,8 @@ public class Dragao extends Animado {
 				asleep();
 				break;
 			case 2: //move
-				int y = 2*ThreadLocalRandom.current().nextInt(1, 5 + 1);
-				while(!jogo.updateAnimado(y,this) && tryCounter<8) {tryCounter++;} //obrigar o dragao a mover-se
+				int y = 2*ThreadLocalRandom.current().nextInt(1, 4 + 1);
+				while(!jogo.updateAnimado(Main.convertIntToDirection(y),this) && tryCounter>0) {tryCounter--;} //obrigar o dragao a mover-se
 				break;
 				
 			}
