@@ -106,10 +106,10 @@ public class MainWindow {
 		final JTextArea mazeWindow = new JTextArea();
 		mazeWindow.setFont(new Font("Courier New", Font.PLAIN, 13));
 		mazeWindow.setEditable(false);
-		mazeWindow.setBounds(30, 143, 335, 335);
+		mazeWindow.setBounds(30, 143, 330, 345);
 		frame.getContentPane().add(mazeWindow);
 		
-		JLabel lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
+		final JLabel lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
 		lblMessageBox.setVerticalAlignment(SwingConstants.TOP);
 		lblMessageBox.setBounds(400, 409, 189, 69);
 		frame.getContentPane().add(lblMessageBox);
@@ -117,14 +117,14 @@ public class MainWindow {
 		JButton btnGerarNovoLabirinto = new JButton("Gerar novo labirinto");
 		btnGerarNovoLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*int alt,larg,numD;
+				int alt,larg,numD;
 				alt=Integer.parseInt(altura.getText());
 				larg=Integer.parseInt(largura.getText());
 				numD=Integer.parseInt(numDragoes.getText());
 				maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
 				maze.logic.Maze objMaze= new maze.logic.Maze(charMaze.getMaze());
-				mazeWindow.setText(maze.cli.main.getDisplay(objMaze.getMaze())); //ESTOU AQUI----------------------------------
-				mazeWindow.setEnabled(true);*/
+				mazeWindow.setText(maze.cli.main.getDisplay(objMaze.getMaze()));
+				lblMessageBox.setText("Pode jogar!");
 			}
 		});
 		btnGerarNovoLabirinto.setBounds(422, 18, 148, 38);
@@ -144,7 +144,7 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnCima.setBounds(450, 225, 89, 35);
+		btnCima.setBounds(450, 225, 100, 35);
 		frame.getContentPane().add(btnCima);
 		
 		JButton btnEsquerda = new JButton("ESQUERDA");
@@ -152,15 +152,15 @@ public class MainWindow {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnEsquerda.setBounds(400, 270, 89, 35);
+		btnEsquerda.setBounds(390, 270, 100, 35);
 		frame.getContentPane().add(btnEsquerda);
 		
 		JButton btnDireita = new JButton("DIREITA");
-		btnDireita.setBounds(500, 270, 89, 35);
+		btnDireita.setBounds(510, 270, 100, 35);
 		frame.getContentPane().add(btnDireita);
 		
 		JButton btnBaixo = new JButton("BAIXO");
-		btnBaixo.setBounds(450, 315, 89, 33);
+		btnBaixo.setBounds(450, 315, 100, 35);
 		frame.getContentPane().add(btnBaixo);
 	}
 }
