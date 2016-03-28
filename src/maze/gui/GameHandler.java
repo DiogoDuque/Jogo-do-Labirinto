@@ -19,15 +19,22 @@ public class GameHandler {
 						objMaze.getDragaoIndex(i).mudarEstado(objMaze, dragonType);
 					}
 		}
-		else {		
-		if(objMaze.getStatus()==MazeStatus.Victory)
+		{		
+		if(objMaze.getStatus()==MazeStatus.Victory){
 			window.lblMessageBox.setText(("O HEROI CONSEGUIU ESCAPAR!"));
-		else window.lblMessageBox.setText(("O HEROI MORREU..."));
+		//disable dos butoes
+				window.btnBaixo.setEnabled(false);
+				window.btnCima.setEnabled(false);
+				window.btnEsquerda.setEnabled(false);
+				window.btnDireita.setEnabled(false);}
+		
+		if(objMaze.getStatus()==MazeStatus.HeroDied){
+			window.lblMessageBox.setText(("O HEROI MORREU..."));
 		//disable dos butoes
 		window.btnBaixo.setEnabled(false);
 		window.btnCima.setEnabled(false);
 		window.btnEsquerda.setEnabled(false);
-		window.btnDireita.setEnabled(false);
+		window.btnDireita.setEnabled(false);}
 		}
 		MainWindow.mazeWindow.setText(maze.cli.Main.getDisplay(objMaze.getMaze()));
 	}

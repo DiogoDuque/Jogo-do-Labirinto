@@ -272,8 +272,9 @@ public class Maze {
 
 		// se estiver na saida
 		if (status == MazeStatus.DragonDied && obj.getSimbolo() == 'S') {
+			
 			status=MazeStatus.Victory;
-			return true;
+			return false;
 		}
 
 		// qualquer outra situacao é colisao
@@ -297,13 +298,13 @@ public class Maze {
 			{
 				if (getStatus() == MazeStatus.HeroArmed) { // se estiver armado
 					maze[dX][dY] = null; // dragao desaparece
-					dragoes.remove(dragoes.size()-1);
+					dragoes.remove(i);
 					if(dragoes.isEmpty())
 					{
 						status=MazeStatus.DragonDied;
 						maze[saida.getX()][saida.getY()] = saida;
 					}
-				} else if (dragao.getSimbolo() == 'D')
+				} else if (dragao.getSimbolo() == 'D' || dragao.getSimbolo() == 'F')
 					status=MazeStatus.HeroDied; // heroi morre e jogo acaba
 			}
 		}
