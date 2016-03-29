@@ -239,7 +239,8 @@ public class Maze {
 			default:
 				break;
 			}
-		proximidadeHeroiDragao();
+	
+			
 		return true;
 	}
 

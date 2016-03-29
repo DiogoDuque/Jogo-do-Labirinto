@@ -30,7 +30,8 @@ public class Main {
 		else return; //ERROR
 		
 		
-		do{
+		while(jogo.getStatus()!=MazeStatus.HeroDied && jogo.getStatus()!=MazeStatus.Victory)
+		{
 			display(jogo.getMaze());
 			int direcao = s.nextInt();
 			jogo.updateAnimado(convertIntToDirection(direcao), jogo.getHeroi());
@@ -40,8 +41,9 @@ public class Main {
 					{
 						jogo.getDragaoIndex(i).mudarEstado(jogo, dragonType);
 					}
-			
-		}while(jogo.getStatus()!=MazeStatus.HeroDied && jogo.getStatus()!=MazeStatus.Victory);
+			jogo.proximidadeHeroiDragao();
+		}
+		
 		if(jogo.getStatus()==MazeStatus.Victory)
 			System.out.println("O HEROI CONSEGUIU ESCAPAR!");
 			

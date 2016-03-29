@@ -19,6 +19,7 @@ public class GameHandler {
 						objMaze.getDragaoIndex(i).mudarEstado(objMaze, dragonType);
 					}
 		}
+		objMaze.proximidadeHeroiDragao();
 		{		
 		if(objMaze.getStatus()==MazeStatus.Victory){
 			window.lblMessageBox.setText(("O HEROI CONSEGUIU ESCAPAR!"));
