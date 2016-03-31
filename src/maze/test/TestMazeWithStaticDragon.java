@@ -43,12 +43,12 @@ public class TestMazeWithStaticDragon {
 			maze.moveHeroLeft();
 		for(int i=0; i<=2; i++)
 			maze.moveHeroDown();
-		assertEquals('A',maze.getHeroi().getSimbolo());
+		assertEquals('A',maze.getHero().getSymbol());
 		assertEquals(MazeStatus.HeroArmed, maze.getStatus());
 		//MAZE 2
 		maze = new Maze(m2);
 		maze.moveHeroDown();
-		assertEquals('A',maze.getHeroi().getSimbolo());
+		assertEquals('A',maze.getHero().getSymbol());
 	}
 	
 	@Test //d

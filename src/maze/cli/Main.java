@@ -8,7 +8,7 @@ import maze.logic.Maze.DragonType;
 public class Main {
 	
 	public static void main(String[] args) {
-		maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(9,11,2);
+		/*maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(9,11,2);
 		maze.logic.Maze jogo = new maze.logic.Maze(charMaze.getMaze());
 		Scanner s = new Scanner(System.in);
 		int choice =-1;
@@ -34,7 +34,7 @@ public class Main {
 		{
 			display(jogo.getMaze());
 			int direcao = s.nextInt();
-			jogo.updateAnimado(convertIntToDirection(direcao), jogo.getHeroi());
+			jogo.moveGeral(convertIntToDirection(direcao), jogo.getHeroi());
 			if(jogo.getStatus()!= MazeStatus.DragonDied && //se o dragao nao estiver morto e
 				dragonType != DragonType.Static) 			//se tiver movimento ativo
 					for(int i=0; i<jogo.getDragoesSize(); i++)
@@ -50,13 +50,13 @@ public class Main {
 		else System.out.println("O HEROI MORREU...");
 		
 		
-		s.close();
+		s.close();*/
 	}
 
 	/**
 	 * Mostra o maze e o seu conteudo
 	 */
-	public static void display(maze.logic.Geral[][] maze) {
+	/*public static void display(maze.logic.Geral[][] maze) {
 		for (int i = 0; i < maze.length; i++) {
 			for (int j = 0; j < maze[0].length; j++) {
 				if (maze[i][j] == null)
@@ -67,22 +67,7 @@ public class Main {
 			}
 			System.out.println();
 		}
-	}
-	
-	public static String getDisplay(maze.logic.Geral[][] maze) {
-		String disp="";
-		for (int i = 0; i < maze.length; i++) {
-			for (int j = 0; j < maze[0].length; j++) {
-				if (maze[i][j] == null)
-					disp += " ";
-				else
-					disp += maze[i][j].getSimbolo();
-				disp += " ";
-			}
-			disp += "\n";
-		}
-		return disp;
-	}
+	}*/
 	
 	public static Direction convertIntToDirection(int i)
 	{

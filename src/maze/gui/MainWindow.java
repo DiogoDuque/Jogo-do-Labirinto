@@ -172,7 +172,7 @@ public class MainWindow {
 				maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
 				GameHandler.objMaze= new maze.logic.Maze(charMaze.getMaze());
 				GameHandler.dragonType=(DragonType) tipoDragao.getSelectedItem();
-				mazeWindow.setText(maze.cli.Main.getDisplay(GameHandler.objMaze.getMaze()));
+				mazeWindow.setText(GameHandler.getDisplay());
 				lblMessageBox.setText("Pode jogar!");
 				btnBaixo.setEnabled(true);
 				btnCima.setEnabled(true);

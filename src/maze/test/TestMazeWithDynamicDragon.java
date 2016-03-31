@@ -34,9 +34,9 @@ public class TestMazeWithDynamicDragon {
 			Maze maze = new Maze(m1);
 			
 			
-			maze.getDragaoIndex(0).asleep();
+			maze.getDragonByIndex(0).asleep();
 			
-		if(!maze.getDragaoIndex(0).acordado){
+		if(!maze.getDragonByIndex(0).acordado){
 			outcome1 = true;
 		}
 			else
@@ -51,10 +51,10 @@ public class TestMazeWithDynamicDragon {
 		while (! outcome1) {
 			Maze maze = new Maze(m1);
 			
-			maze.getDragaoIndex(0).asleep();
-			maze.getDragaoIndex(0).awake();
+			maze.getDragonByIndex(0).asleep();
+			maze.getDragonByIndex(0).awake();
 			
-		if(maze.getDragaoIndex(0).acordado){
+		if(maze.getDragonByIndex(0).acordado){
 			outcome1 = true;
 		}
 			else
@@ -69,16 +69,16 @@ public class TestMazeWithDynamicDragon {
 		boolean outcome1 = false;		
 		
 		while (! outcome1) {
-			Point P= new Point(2,2);
+			Point p= new Point(2,2);
 			Maze maze = new Maze(m2);
 			DragonType dragonType = DragonType.RandomMovement;
-			maze.getDragaoIndex(0).mudarEstado(maze, dragonType);
+			maze.getDragonByIndex(0).mudarEstado(maze, dragonType);
 			
-		if(maze.getDragaoIndex(0).p.x == P.x && maze.getDragaoIndex(0).p.y != P.y){
+		if(maze.getDragonByIndex(0).getX() == p.x && maze.getDragonByIndex(0).getY() != p.y){
 			outcome1 = true;
-		} else if(maze.getDragaoIndex(0).p.x != P.x && maze.getDragaoIndex(0).p.y == P.y){
+		} else if(maze.getDragonByIndex(0).getX() != p.x && maze.getDragonByIndex(0).getY() == p.y){
 			outcome1 = true;
-		} else if(maze.getDragaoIndex(0).p.x != P.x && maze.getDragaoIndex(0).p.y != P.y){
+		} else if(maze.getDragonByIndex(0).getX() != p.x && maze.getDragonByIndex(0).getY() != p.y){
 			outcome1 = true;
 		} else
 		
