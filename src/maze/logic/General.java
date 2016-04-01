@@ -7,14 +7,14 @@ public class General {
 
 	protected Point p;
 	
-	protected char simbolo;
+	protected char symbol;
 	
 	protected HashMap<Point,General> maze;
 	
-	public General(int x, int y, char simbolo, HashMap<Point,General> maze)
+	public General(int x, int y, char symbol, HashMap<Point,General> maze)
 	{
 		p = new Point(x,y);
-		this.simbolo=simbolo;
+		this.symbol=symbol;
 		this.maze=maze;
 	}
 	
@@ -28,7 +28,7 @@ public class General {
 	
 	public int getY() {return p.y;}
 	
-	public char getSymbol() {return simbolo;}
+	public char getSymbol() {return symbol;}
 	
 	//SETS
 	
@@ -46,6 +46,6 @@ public class General {
 		maze.put(p, this);
 	}
 
-	void setSimbolo(char simbolo) {this.simbolo=simbolo;}
+	void setSymbol(char symbol) {this.symbol=symbol;}
 	
 }

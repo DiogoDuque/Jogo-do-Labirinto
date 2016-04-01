@@ -15,6 +15,12 @@ public class Dragon extends General {
 		acordado = true;
 	}
 	
+	/**
+	 * Possibilita que o dragão acorde(se estiver adormecido), adormeça(se estiver acordado), ou se mantenha no mesmo estado.
+	 * Caso este esteja (e permaneça) acordado, poderá mover-se.
+	 * @param jogo objeto que contém o labirinto e as funções associadas à sua lógica, neste caso para permitir o uso de moveGeral().
+	 * @param dragonType modo de jogo associado ao movimento dos dragões.
+	 */
 	public void mudarEstado(Maze jogo, Maze.DragonType dragonType)
 	{	
 		int tryCounter=20; //para impedir que as "tentativas de movimento forcadas" nao dessem loop infinito
@@ -59,17 +65,24 @@ public class Dragon extends General {
 		}
 	}
 	
-	public boolean asleep(){
+	/**
+	 * adormece o dragao.
+	 */
+	public void asleep(){
 		acordado = false;
-		super.setSimbolo('d');
-		return true;
-		
+		if(super.getSymbol()=='F')
+			super.setSymbol('f');
+		else super.setSymbol('d');
 	}
 	
-	public boolean awake(){
+	/**
+	 * acorda o dragão.
+	 */
+	public void awake(){
 		acordado = true;
-		super.setSimbolo('D');
-		return true;
+		if(super.getSymbol()=='f')
+			super.setSymbol('F');
+		else super.setSymbol('D');
 		
 	}
 
@@ -79,9 +92,9 @@ public class Dragon extends General {
 	{
 		maze.remove(p); //remover dragao do hashmap para depois o reposicionar
 		
-		if(simbolo=='F') //se estivesse a pisar a espada
+		if(symbol=='F') //se estivesse a pisar a espada
 		{
-			simbolo='D';
+			symbol='D';
 			General temp = maze.remove(new Point(-1,-1));
 			maze.put(p,temp); //repor a espada
 		}
@@ -91,7 +104,7 @@ public class Dragon extends General {
 		
 		if(temp instanceof Sword) //se o dragao esta a pisar a espada
 		{
-			simbolo='F';
+			symbol='F';
 			maze.put(new Point(-1,-1), temp); //espada fica 'fora' do maze, na posicao (-1,-1)
 		}
 	}
@@ -100,9 +113,9 @@ public class Dragon extends General {
 	{
 		maze.remove(p); //remover dragao do hashmap para depois o reposicionar
 		
-		if(simbolo=='F') //se estivesse a pisar a espada
+		if(symbol=='F') //se estivesse a pisar a espada
 		{
-			simbolo='D';
+			symbol='D';
 			maze.put(p,maze.remove(new Point(-1,-1))); //repor a espada
 		}
 		
@@ -111,7 +124,7 @@ public class Dragon extends General {
 		
 		if(temp instanceof Sword) //se o dragao esta a pisar a espada
 		{
-			simbolo='F';
+			symbol='F';
 			maze.put(new Point(-1,-1), temp); //espada fica 'fora' do maze, na posicao (-1,-1)
 		}
 	}

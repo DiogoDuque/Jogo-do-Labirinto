@@ -24,6 +24,7 @@ import maze.logic.Maze.DragonType;
 
 public class MainWindow {
 
+	private GameHandler handler;
 	private JFrame frame;
 	private JTextField altura;
 	private JTextField largura;
@@ -62,12 +63,16 @@ public class MainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		final MainWindow obj = this;
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 650, 550);
+		frame.setBounds(100, 100, 650, 577);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		handler = new GameHandler(this);
+		frame.getContentPane().add(handler);
+		handler.requestFocusInWindow();
+		
 		
 		//Info para gerar o labirinto
 		
@@ -116,7 +121,7 @@ public class MainWindow {
 		btnCima = new JButton("CIMA");
 		btnCima.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameHandler.play(obj,Direction.UP);
+				handler.play(Direction.UP);
 			}
 		});
 		btnCima.setBounds(450, 225, 100, 35);
@@ -125,7 +130,7 @@ public class MainWindow {
 		btnEsquerda = new JButton("ESQUERDA");
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameHandler.play(obj,Direction.LEFT);
+				handler.play(Direction.LEFT);
 			}
 		});
 		btnEsquerda.setBounds(390, 270, 100, 35);
@@ -134,7 +139,7 @@ public class MainWindow {
 		btnDireita = new JButton("DIREITA");
 		btnDireita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameHandler.play(obj,Direction.RIGHT);
+				handler.play(Direction.RIGHT);
 			}
 		});
 		btnDireita.setBounds(510, 270, 100, 35);
@@ -143,7 +148,7 @@ public class MainWindow {
 		btnBaixo = new JButton("BAIXO");
 		btnBaixo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameHandler.play(obj,Direction.DOWN);
+				handler.play(Direction.DOWN);
 			}
 		});
 		btnBaixo.setBounds(450, 315, 100, 35);
@@ -159,7 +164,7 @@ public class MainWindow {
 		
 		lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
 		lblMessageBox.setVerticalAlignment(SwingConstants.TOP);
-		lblMessageBox.setBounds(400, 409, 189, 69);
+		lblMessageBox.setBounds(30, 499, 580, 20);
 		frame.getContentPane().add(lblMessageBox);
 		
 		JButton btnGerarNovoLabirinto = new JButton("Gerar novo labirinto");
@@ -169,10 +174,18 @@ public class MainWindow {
 				alt=Integer.parseInt(altura.getText());
 				larg=Integer.parseInt(largura.getText());
 				numD=Integer.parseInt(numDragoes.getText());
-				maze.logic.MazeBuilder charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
-				GameHandler.objMaze= new maze.logic.Maze(charMaze.getMaze());
-				GameHandler.dragonType=(DragonType) tipoDragao.getSelectedItem();
-				mazeWindow.setText(GameHandler.getDisplay());
+				maze.logic.MazeBuilder charMaze;
+				try {
+				charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
+				}
+				catch(IllegalArgumentException exception)
+				{
+					lblMessageBox.setText(exception.getMessage());
+					return;
+				}
+				handler.objMaze= new maze.logic.Maze(charMaze.getMaze());
+				handler.dragonType=(DragonType) tipoDragao.getSelectedItem();
+				mazeWindow.setText(handler.getDisplay());
 				lblMessageBox.setText("Pode jogar!");
 				btnBaixo.setEnabled(true);
 				btnCima.setEnabled(true);

@@ -14,11 +14,11 @@ public class MazeBuilder {
 
 	public MazeBuilder(int height, int width, int numDragons) {
 		if ((height & 1) == 0 || (width & 1) == 0)
-			throw new IllegalArgumentException("Maze dimensions must be odd: were even.");
+			throw new IllegalArgumentException("ERRO: Altura e largura do labirinto devem ser impares!");
 		if (height>23 || width>21)
-			throw new IllegalArgumentException("Maze dimensions are too large.");
+			throw new IllegalArgumentException("ERRO: Dimensoes do labirinto são demasiado grandes!");
 		if(numDragons>(height/5)*(width/5))
-			throw new IllegalArgumentException("Too much dragons.");
+			throw new IllegalArgumentException("Existem demasiados dragoes para o tamanho do labirinto!");
 
 		// inicializar array
 		maze = new char[height][width];
@@ -114,6 +114,9 @@ public class MazeBuilder {
 		}
 	}
 
+	/**
+	 * gera um labirinto vazio, somente com paredes e saida
+	 */
 	private void generate() {
 		while (!pathHistory.isEmpty()) {			
 			int x = guidingCell.x, y = guidingCell.y;
@@ -152,6 +155,9 @@ public class MazeBuilder {
 		}
 	}
 
+	/**
+	 * @return true se a guidingCell se puder mover para estas coordenadas, falso em caso contrário.
+	 */
 	private boolean canMove(int x, int y) {
 		if (x < 0 || y < 0 || x >= visitedCells[0].length || y >= visitedCells.length)
 			return false;
@@ -165,7 +171,11 @@ public class MazeBuilder {
 		return maze;
 	}
 	
-	public void displayFull() // so para debugging
+	/**
+	 * FUNCAO USADA APENAS PARA DEBUGGING!
+	 * Mostra na consola o estado atual das estruturas maze, visitedCells e pathHistory.
+	 */
+	public void displayFull()
 	{
 		System.out.println("");
 		System.out.println("");
@@ -197,6 +207,10 @@ public class MazeBuilder {
 		pathHistory=temp;
 	}
 	
+	/**
+	 * FUNCAO USADA APENAS PARA DEBUGGING!
+	 * Mostra na consola o estado atual da estrutura maze.
+	 */
 	public void display() // so para debugging
 	{
 		for (int i = 0; i < maze.length; i++) {

@@ -77,17 +77,19 @@ public class Maze {
 	
 	public Point getDimensions() {return new Point(height,width);}
 	
-	//DRAGAO
+	//GETS DRAGON
 
 	public Dragon getDragonByIndex(int index) {return dragons.get(index);}
 	
 	public int getDragonsSize() {return dragons.size();}
 
-	//HERO
+	//GETS HERO
 	
 	public Hero getHero() {return hero;}
 	
 	public Point getHeroPosition() {return hero.getPoint();}
+	
+	//MOVES HERO
 
 	public void moveHeroLeft() {moveGeral(Direction.LEFT, hero);}
 
@@ -99,14 +101,14 @@ public class Maze {
 
 
 	/**
-	 * Atualiza a posicao do Geral com o simbolo recebido de acordo com a
-	 * direcao recebida, caso seja possivel (e nao vá contra uma parede).
+	 * 
+	 * @param direction direção em que anim se tentará mover.
+	 * @param anim General que se tentará mover.
+	 * @return true se anim conseguiu mover-se, falso em caso contrário. (Particularmente util para verificar se o dragão se moveu ou não com sucesso)
 	 */
 	public boolean moveGeral(Direction direction, General anim) {
 
 		boolean moved = true;
-		General replacer = null;
-
 		int x = anim.getX(), y = anim.getY(); // recolher coordenadas do Geral
 
 		// se dragao e espada estiverem sobrepostos
@@ -137,7 +139,7 @@ public class Maze {
 					break;
 				}
 				if (anim.getSymbol() == 'F')
-					anim.setSimbolo('D');
+					anim.setSymbol('D');
 				anim.setX(x+1);
 				break;
 
@@ -148,7 +150,7 @@ public class Maze {
 					break;
 				}
 				if (anim.getSymbol() == 'F')
-					anim.setSimbolo('D');
+					anim.setSymbol('D');
 				anim.setY(y-1);
 				break;
 				
@@ -161,8 +163,8 @@ public class Maze {
 	}
 
 	/**
-	 * Detects collisions.
-	 * @return true if collision happens, false otherwise.
+	 * Deteta colisões.
+	 * @return true se ocorreu colisão, false em caso contrário.
 	 */
 	private boolean detecaoColisao(General anim, int x, int y) {
 
@@ -179,7 +181,7 @@ public class Maze {
 		// se o hero vai apanhar a espada
 		if (obj.getSymbol() == 'E' && animSimbolo == 'H') {
 			status=MazeStatus.HeroArmed;
-			anim.setSimbolo('A');
+			anim.setSymbol('A');
 			return false;
 		}
 
@@ -199,7 +201,7 @@ public class Maze {
 	}
 
 	/**
-	 * Deteta se o dragao e o hero estao adjacentes. Caso estejam, aplicam-se
+	 * Deteta se um dragon e o hero estao adjacentes. Caso estejam, aplicam-se
 	 * as regras do jogo e um deles morre, de acordo com se o hero possui a
 	 * espada ou nao.
 	 */

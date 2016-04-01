@@ -1,9 +1,6 @@
 package maze.cli;
-import java.util.Scanner;
 
-import maze.logic.Maze.MazeStatus;
 import maze.logic.Maze.Direction;
-import maze.logic.Maze.DragonType;
 
 public class Main {
 	
