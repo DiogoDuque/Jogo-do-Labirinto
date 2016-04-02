@@ -72,6 +72,8 @@ public class MainWindow {
 		frame.getContentPane().setLayout(null);
 		
 		handler = new GameHandler(this);
+		handler.setVisible(true);
+		handler.setBounds(450, 390, 100, 100);
 		frame.getContentPane().add(handler);
 		
 		
@@ -172,6 +174,8 @@ public class MainWindow {
 		lblMessageBox.setBounds(30, 499, 580, 20);
 		frame.getContentPane().add(lblMessageBox);
 		
+		
+		
 		JButton btnGerarNovoLabirinto = new JButton("Gerar novo labirinto");
 		btnGerarNovoLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -196,6 +200,8 @@ public class MainWindow {
 				btnCima.setEnabled(true);
 				btnEsquerda.setEnabled(true);
 				btnDireita.setEnabled(true);
+				
+				handler.repaint();
 			}
 		});
 		btnGerarNovoLabirinto.addKeyListener(new KeyAdapter() {
@@ -224,7 +230,8 @@ public class MainWindow {
 					break;
 				}
 				//repaint();
-
+				
+				handler.repaint();
 				
 			}
 		});

@@ -5,21 +5,58 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
-import maze.logic.General;
 import maze.logic.Maze.*;
-import maze.logic.Exit;
+
+import java.awt.image.BufferedImage;
+import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import maze.logic.*;
 
 public class GameHandler extends JPanel {
 	
 	public maze.logic.Maze objMaze;
 	public DragonType dragonType;
 	private MainWindow window;
+	public BufferedImage won;
+	public BufferedImage lost;
+	public BufferedImage play;
+	public boolean gWon=false;
+	public boolean gLost=false;
 	
 	GameHandler(final MainWindow window)
 	{
 		this.window=window;
+		try {
+			won =  ImageIO.read(new File("res/youWin.png"));
+			lost =  ImageIO.read(new File("res/gameover.png"));
+			play =  ImageIO.read(new File("res/photo.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setStatus(Maze objMaze){
+		if(objMaze.getStatus()==MazeStatus.Victory)
+			gWon=true;
+		if(objMaze.getStatus()==MazeStatus.HeroDied)
+			gLost=true;
+	}
+	
+	public void paintComponent(Graphics gr) {
+		super.paintComponent(gr); // clears the background ...		
+		if(gWon)
+			gr.drawImage(won,0,0, null);
+		else if(gLost)
+			gr.drawImage(lost,0,0, null);
+		else gr.drawImage(play,0,0, null);
 		
 	}
+	
+	
 	
 	public void play(Direction direcao)
 	{
@@ -37,7 +74,8 @@ public class GameHandler extends JPanel {
 		if(objMaze.getStatus()==MazeStatus.Victory)
 		{
 			window.lblMessageBox.setText(("O HEROI CONSEGUIU ESCAPAR!"));
-		//disable dos butoes
+			
+			//disable dos butoes
 			disableButtons();
 		}
 		
@@ -48,6 +86,7 @@ public class GameHandler extends JPanel {
 			disableButtons();
 		}
 		MainWindow.mazeWindow.setText(getDisplay());
+		setStatus(objMaze);
 	}
 	
 	public String getDisplay() {
