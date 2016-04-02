@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
@@ -71,7 +73,6 @@ public class MainWindow {
 		
 		handler = new GameHandler(this);
 		frame.getContentPane().add(handler);
-		handler.requestFocusInWindow();
 		
 		
 		//Info para gerar o labirinto
@@ -119,6 +120,7 @@ public class MainWindow {
 		//botoes para as direcoes
 		
 		btnCima = new JButton("CIMA");
+		btnCima.setEnabled(false);
 		btnCima.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.UP);
@@ -128,6 +130,7 @@ public class MainWindow {
 		frame.getContentPane().add(btnCima);
 		
 		btnEsquerda = new JButton("ESQUERDA");
+		btnEsquerda.setEnabled(false);
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.LEFT);
@@ -137,6 +140,7 @@ public class MainWindow {
 		frame.getContentPane().add(btnEsquerda);
 		
 		btnDireita = new JButton("DIREITA");
+		btnDireita.setEnabled(false);
 		btnDireita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.RIGHT);
@@ -146,6 +150,7 @@ public class MainWindow {
 		frame.getContentPane().add(btnDireita);
 		
 		btnBaixo = new JButton("BAIXO");
+		btnBaixo.setEnabled(false);
 		btnBaixo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.DOWN);
@@ -191,6 +196,36 @@ public class MainWindow {
 				btnCima.setEnabled(true);
 				btnEsquerda.setEnabled(true);
 				btnDireita.setEnabled(true);
+			}
+		});
+		btnGerarNovoLabirinto.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(!btnBaixo.isEnabled()) //basta fazer a verificacao para um botao, visto que estao todos no mesmo estado
+					return; //nao recebe inputs enquanto nao estiver um jogo a decorrer
+				switch(e.getKeyCode()){
+				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_A:
+					handler.play(Direction.LEFT);
+					break;
+					
+				case KeyEvent.VK_RIGHT:
+				case KeyEvent.VK_D:
+					handler.play(Direction.RIGHT);
+					break;
+
+				case KeyEvent.VK_UP:
+				case KeyEvent.VK_W: 
+					handler.play(Direction.UP);
+					break;
+
+				case KeyEvent.VK_DOWN:
+				case KeyEvent.VK_S: 
+					handler.play(Direction.DOWN);
+					break;
+				}
+				//repaint();
+
+				
 			}
 		});
 		btnGerarNovoLabirinto.setBounds(422, 18, 148, 38);

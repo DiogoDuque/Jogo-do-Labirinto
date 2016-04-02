@@ -1,10 +1,6 @@
 package maze.gui;
 
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashMap;
 
 import javax.swing.JPanel;
@@ -15,71 +11,17 @@ import maze.logic.Exit;
 
 public class GameHandler extends JPanel {
 	
-	public static maze.logic.Maze objMaze;
-	public static DragonType dragonType;
-	private static MainWindow window;
+	public maze.logic.Maze objMaze;
+	public DragonType dragonType;
+	private MainWindow window;
 	
 	GameHandler(final MainWindow window)
 	{
 		this.window=window;
-		addMouseListener(new MouseListener(){
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}	
-		});
 		
-		addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				switch(e.getKeyCode()){
-				case KeyEvent.VK_LEFT: 
-					play(Direction.LEFT);
-					break;
-					
-				case KeyEvent.VK_RIGHT: 
-					play(Direction.RIGHT);
-					break;
-
-				case KeyEvent.VK_UP: 
-					play(Direction.UP);
-					break;
-
-				case KeyEvent.VK_DOWN: 
-					play(Direction.DOWN);
-					break;
-				}
-				//repaint();
-
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}			
-		});
 	}
 	
-	public static void play(Direction direcao)
+	public void play(Direction direcao)
 	{
 		if(objMaze.getStatus()!=MazeStatus.HeroDied && objMaze.getStatus()!=MazeStatus.Victory)
 		{
@@ -91,28 +33,24 @@ public class GameHandler extends JPanel {
 						objMaze.getDragonByIndex(i).mudarEstado(objMaze, dragonType);
 					}
 		}
-		objMaze.proximityHeroDragon();
-		{		
-		if(objMaze.getStatus()==MazeStatus.Victory){
+		objMaze.proximityHeroDragon();		
+		if(objMaze.getStatus()==MazeStatus.Victory)
+		{
 			window.lblMessageBox.setText(("O HEROI CONSEGUIU ESCAPAR!"));
 		//disable dos butoes
-				window.btnBaixo.setEnabled(false);
-				window.btnCima.setEnabled(false);
-				window.btnEsquerda.setEnabled(false);
-				window.btnDireita.setEnabled(false);}
+			disableButtons();
+		}
 		
-		if(objMaze.getStatus()==MazeStatus.HeroDied){
+		if(objMaze.getStatus()==MazeStatus.HeroDied)
+		{
 			window.lblMessageBox.setText(("O HEROI MORREU..."));
 		//disable dos butoes
-		window.btnBaixo.setEnabled(false);
-		window.btnCima.setEnabled(false);
-		window.btnEsquerda.setEnabled(false);
-		window.btnDireita.setEnabled(false);}
+			disableButtons();
 		}
 		MainWindow.mazeWindow.setText(getDisplay());
 	}
 	
-	public static String getDisplay() {
+	public String getDisplay() {
 		HashMap<Point,General> maze = objMaze.getMaze();
 		Point dims = objMaze.getDimensions();
 		int height=dims.x, width=dims.y;
@@ -137,5 +75,13 @@ public class GameHandler extends JPanel {
 			disp += "\n";
 		}
 		return disp;
+	}
+	
+	private void disableButtons()
+	{
+		window.btnBaixo.setEnabled(false);
+		window.btnCima.setEnabled(false);
+		window.btnEsquerda.setEnabled(false);
+		window.btnDireita.setEnabled(false);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.awt.Point;
+import java.nio.charset.Charset;
 
 public class MazeBuilder {
 
@@ -80,7 +81,7 @@ public class MazeBuilder {
 		generate();
 		
 		//colocar outros objetos/personagens
-		ArrayList objs = new ArrayList<>(); //nao dava para fazer so de char
+		ArrayList<Character> objs = new ArrayList<Character>(); //nao dava para fazer so de char
 		objs.add('H');
 		
 		while(numDragons!=0)
