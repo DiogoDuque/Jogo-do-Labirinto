@@ -33,7 +33,7 @@ public class GameHandler extends JPanel {
 		try {
 			won =  ImageIO.read(new File("res/youWin.png"));
 			lost =  ImageIO.read(new File("res/gameover.png"));
-			play =  ImageIO.read(new File("res/photo.png"));
+			play =  ImageIO.read(new File("res/photo.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -42,8 +42,12 @@ public class GameHandler extends JPanel {
 	public void setStatus(Maze objMaze){
 		if(objMaze.getStatus()==MazeStatus.Victory)
 			gWon=true;
-		if(objMaze.getStatus()==MazeStatus.HeroDied)
+		else if(objMaze.getStatus()==MazeStatus.HeroDied)
 			gLost=true;
+		else 
+			{gWon=false;
+			gLost=false;}
+			
 	}
 	
 	public void paintComponent(Graphics gr) {
@@ -87,6 +91,7 @@ public class GameHandler extends JPanel {
 		}
 		MainWindow.mazeWindow.setText(getDisplay());
 		setStatus(objMaze);
+		repaint();
 	}
 	
 	public String getDisplay() {

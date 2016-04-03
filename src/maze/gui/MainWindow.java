@@ -24,6 +24,7 @@ import maze.logic.Maze.Direction;
 import maze.logic.Maze.DragonType;
 
 
+
 public class MainWindow {
 
 	private GameHandler handler;
@@ -123,6 +124,7 @@ public class MainWindow {
 		
 		btnCima = new JButton("CIMA");
 		btnCima.setEnabled(false);
+		receiveInputs(btnCima);
 		btnCima.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.UP);
@@ -133,6 +135,7 @@ public class MainWindow {
 		
 		btnEsquerda = new JButton("ESQUERDA");
 		btnEsquerda.setEnabled(false);
+		receiveInputs(btnEsquerda);
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.LEFT);
@@ -143,6 +146,7 @@ public class MainWindow {
 		
 		btnDireita = new JButton("DIREITA");
 		btnDireita.setEnabled(false);
+		receiveInputs(btnDireita);
 		btnDireita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.RIGHT);
@@ -153,6 +157,7 @@ public class MainWindow {
 		
 		btnBaixo = new JButton("BAIXO");
 		btnBaixo.setEnabled(false);
+		receiveInputs(btnBaixo);
 		btnBaixo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.DOWN);
@@ -177,6 +182,7 @@ public class MainWindow {
 		
 		
 		JButton btnGerarNovoLabirinto = new JButton("Gerar novo labirinto");
+		receiveInputs(btnGerarNovoLabirinto);
 		btnGerarNovoLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int alt,larg,numD;
@@ -204,7 +210,27 @@ public class MainWindow {
 				handler.repaint();
 			}
 		});
-		btnGerarNovoLabirinto.addKeyListener(new KeyAdapter() {
+		
+		btnGerarNovoLabirinto.setBounds(422, 18, 148, 38);
+		frame.getContentPane().add(btnGerarNovoLabirinto);
+		
+		JButton btnTerminarPrograma = new JButton("Terminar programa");
+		btnTerminarPrograma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnTerminarPrograma.setBounds(422, 78, 148, 38);
+		frame.getContentPane().add(btnTerminarPrograma);
+		
+	}
+	
+	/**
+	 * 
+	 */
+	void receiveInputs(JButton button)
+	{
+		button.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(!btnBaixo.isEnabled()) //basta fazer a verificacao para um botao, visto que estao todos no mesmo estado
 					return; //nao recebe inputs enquanto nao estiver um jogo a decorrer
@@ -235,17 +261,5 @@ public class MainWindow {
 				
 			}
 		});
-		btnGerarNovoLabirinto.setBounds(422, 18, 148, 38);
-		frame.getContentPane().add(btnGerarNovoLabirinto);
-		
-		JButton btnTerminarPrograma = new JButton("Terminar programa");
-		btnTerminarPrograma.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		btnTerminarPrograma.setBounds(422, 78, 148, 38);
-		frame.getContentPane().add(btnTerminarPrograma);
-		
 	}
 }
