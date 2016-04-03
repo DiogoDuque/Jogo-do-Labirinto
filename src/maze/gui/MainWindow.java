@@ -12,8 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -28,11 +26,11 @@ import maze.logic.Maze.DragonType;
 public class MainWindow {
 
 	private GameHandler handler;
+	private ShowStatus showStatus;
 	private JFrame frame;
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
-	public static JTextArea mazeWindow;
 	public JLabel lblMessageBox;
 	public JButton btnCima;
 	public JButton btnBaixo;
@@ -67,57 +65,60 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		
+		final MainWindow tempRef = this; //para uso na inicializacao do GameHandler
+		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 650, 577);
+		frame.setBounds(100, 100, 1031, 764);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		handler = new GameHandler(this);
-		handler.setVisible(true);
-		handler.setBounds(450, 390, 100, 100);
-		frame.getContentPane().add(handler);
+		showStatus = new ShowStatus(this);
+		showStatus.setVisible(true);
+		showStatus.setBounds(750, 390, 100, 100);
+		frame.getContentPane().add(showStatus);
 		
 		
 		//Info para gerar o labirinto
 		
 		JLabel lblDimensoDoLabirinto = new JLabel("Dimens\u00E3o do labirinto");
-		lblDimensoDoLabirinto.setBounds(30, 30, 110, 14);
+		lblDimensoDoLabirinto.setBounds(30, 30, 124, 14);
 		frame.getContentPane().add(lblDimensoDoLabirinto);
 		
 		JLabel lblNumeroDeDragoes = new JLabel("N\u00FAmero de drag\u00F5es");
-		lblNumeroDeDragoes.setBounds(30, 60, 110, 14);
+		lblNumeroDeDragoes.setBounds(30, 60, 124, 14);
 		frame.getContentPane().add(lblNumeroDeDragoes);
 		
 		JLabel lblTipoDeDragoes = new JLabel("Tipo de drag\u00F5es");
-		lblTipoDeDragoes.setBounds(30, 90, 110, 14);
+		lblTipoDeDragoes.setBounds(30, 90, 124, 14);
 		frame.getContentPane().add(lblTipoDeDragoes);
 		
 		JLabel lblX = new JLabel("x");
-		lblX.setBounds(175, 30, 12, 14);
+		lblX.setHorizontalAlignment(SwingConstants.CENTER);
+		lblX.setBounds(185, 30, 10, 14);
 		frame.getContentPane().add(lblX);
 		
 		altura = new JTextField();
 		altura.setText("11");
-		altura.setBounds(150, 27, 20, 20);
+		altura.setBounds(160, 27, 20, 20);
 		frame.getContentPane().add(altura);
 		altura.setColumns(10);
 		
 		largura = new JTextField();
 		largura.setText("11");
-		largura.setBounds(185, 27, 20, 20);
+		largura.setBounds(200, 27, 20, 20);
 		frame.getContentPane().add(largura);
 		largura.setColumns(10);
 		
 		numDragoes = new JTextField();
 		numDragoes.setText("1");
-		numDragoes.setBounds(150, 57, 20, 20);
+		numDragoes.setBounds(160, 55, 20, 20);
 		frame.getContentPane().add(numDragoes);
 		numDragoes.setColumns(10);
 		
 		final JComboBox tipoDragao = new JComboBox();
 		tipoDragao.setModel(new DefaultComboBoxModel(DragonType.values()));
 		tipoDragao.setToolTipText("");
-		tipoDragao.setBounds(150, 87, 173, 20);
+		tipoDragao.setBounds(160, 85, 173, 20);
 		frame.getContentPane().add(tipoDragao);
 		
 		//botoes para as direcoes
@@ -130,7 +131,7 @@ public class MainWindow {
 				handler.play(Direction.UP);
 			}
 		});
-		btnCima.setBounds(450, 225, 100, 35);
+		btnCima.setBounds(750, 225, 100, 35);
 		frame.getContentPane().add(btnCima);
 		
 		btnEsquerda = new JButton("ESQUERDA");
@@ -141,7 +142,7 @@ public class MainWindow {
 				handler.play(Direction.LEFT);
 			}
 		});
-		btnEsquerda.setBounds(390, 270, 100, 35);
+		btnEsquerda.setBounds(690, 270, 100, 35);
 		frame.getContentPane().add(btnEsquerda);
 		
 		btnDireita = new JButton("DIREITA");
@@ -152,7 +153,7 @@ public class MainWindow {
 				handler.play(Direction.RIGHT);
 			}
 		});
-		btnDireita.setBounds(510, 270, 100, 35);
+		btnDireita.setBounds(810, 270, 100, 35);
 		frame.getContentPane().add(btnDireita);
 		
 		btnBaixo = new JButton("BAIXO");
@@ -163,20 +164,12 @@ public class MainWindow {
 				handler.play(Direction.DOWN);
 			}
 		});
-		btnBaixo.setBounds(450, 315, 100, 35);
+		btnBaixo.setBounds(750, 315, 100, 35);
 		frame.getContentPane().add(btnBaixo);
-		
-		//Acoes para o labirinto
-		
-		mazeWindow = new JTextArea();
-		mazeWindow.setFont(new Font("Courier New", Font.PLAIN, 13));
-		mazeWindow.setEditable(false);
-		mazeWindow.setBounds(30, 143, 330, 345);
-		frame.getContentPane().add(mazeWindow);
 		
 		lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
 		lblMessageBox.setVerticalAlignment(SwingConstants.TOP);
-		lblMessageBox.setBounds(30, 499, 580, 20);
+		lblMessageBox.setBounds(30, 694, 580, 20);
 		frame.getContentPane().add(lblMessageBox);
 		
 		
@@ -198,20 +191,24 @@ public class MainWindow {
 					lblMessageBox.setText(exception.getMessage());
 					return;
 				}
-				handler.objMaze= new maze.logic.Maze(charMaze.getMaze());
-				handler.dragonType=(DragonType) tipoDragao.getSelectedItem();
-				mazeWindow.setText(handler.getDisplay());
 				lblMessageBox.setText("Pode jogar!");
 				btnBaixo.setEnabled(true);
 				btnCima.setEnabled(true);
 				btnEsquerda.setEnabled(true);
 				btnDireita.setEnabled(true);
 				
+				handler = new GameHandler(tempRef);
+				handler.objMaze= new maze.logic.Maze(charMaze.getMaze());
+				handler.dragonType=(DragonType) tipoDragao.getSelectedItem();
+				handler.setVisible(true);
+				handler.setBounds(30, 115, 638, 723);
+				frame.getContentPane().add(handler);
 				handler.repaint();
+				showStatus.repaint();
 			}
 		});
 		
-		btnGerarNovoLabirinto.setBounds(422, 18, 148, 38);
+		btnGerarNovoLabirinto.setBounds(722, 18, 148, 38);
 		frame.getContentPane().add(btnGerarNovoLabirinto);
 		
 		JButton btnTerminarPrograma = new JButton("Terminar programa");
@@ -220,7 +217,7 @@ public class MainWindow {
 				System.exit(0);
 			}
 		});
-		btnTerminarPrograma.setBounds(422, 78, 148, 38);
+		btnTerminarPrograma.setBounds(722, 78, 148, 38);
 		frame.getContentPane().add(btnTerminarPrograma);
 		
 	}
@@ -255,9 +252,6 @@ public class MainWindow {
 					handler.play(Direction.DOWN);
 					break;
 				}
-				//repaint();
-				
-				handler.repaint();
 				
 			}
 		});

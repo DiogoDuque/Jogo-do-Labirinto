@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
+import maze.logic.Exit;
+import maze.logic.General;
 import maze.logic.Maze.*;
 
 import java.awt.image.BufferedImage;
@@ -13,54 +15,85 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-import maze.logic.*;
 
 public class GameHandler extends JPanel {
 	
 	public maze.logic.Maze objMaze;
+	
 	public DragonType dragonType;
 	private MainWindow window;
-	public BufferedImage won;
-	public BufferedImage lost;
-	public BufferedImage play;
-	public boolean gWon=false;
-	public boolean gLost=false;
+	public BufferedImage dragon, dragonAndSword, asleepDragonAndSword, asleepDragon, hero, armedHero, sword, wall, exit, none;
 	
 	GameHandler(final MainWindow window)
 	{
 		this.window=window;
 		try {
-			won =  ImageIO.read(new File("res/youWin.png"));
-			lost =  ImageIO.read(new File("res/gameover.png"));
-			play =  ImageIO.read(new File("res/photo.jpg"));
+			hero = ImageIO.read(new File("res/hero.png"));
+			armedHero = ImageIO.read(new File("res/armedHero.png"));
+			dragon = ImageIO.read(new File("res/dragon.png"));
+			asleepDragon = ImageIO.read(new File("res/asleepDragon.png"));
+			asleepDragonAndSword = ImageIO.read(new File("res/asleepDragonAndSword.png"));
+			dragonAndSword = ImageIO.read(new File("res/dragonAndSword.png"));
+			sword = ImageIO.read(new File("res/sword.png"));
+			wall = ImageIO.read(new File("res/wall.png"));
+			exit = ImageIO.read(new File("res/exit.png"));
+			none = ImageIO.read(new File("res/none.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void setStatus(Maze objMaze){
-		if(objMaze.getStatus()==MazeStatus.Victory)
-			gWon=true;
-		else if(objMaze.getStatus()==MazeStatus.HeroDied)
-			gLost=true;
-		else 
-			{gWon=false;
-			gLost=false;}
-			
-	}
+
 	
 	public void paintComponent(Graphics gr) {
-		super.paintComponent(gr); // clears the background ...		
-		if(gWon)
-			gr.drawImage(won,0,0, null);
-		else if(gLost)
-			gr.drawImage(lost,0,0, null);
-		else gr.drawImage(play,0,0, null);
+		//labirinto
+		super.paintComponent(gr); // clears the background ...
+		HashMap<Point,General> maze = objMaze.getMaze();
+		int height=objMaze.getDimensions().x, width=objMaze.getDimensions().y, imgDim=32;
 		
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if(maze.get(new Point(i,j))==null)
+					gr.drawImage(none, j*imgDim, i*imgDim, null);
+				else switch(maze.get(new Point(i,j)).getSymbol())
+				{
+				case 'H':
+					gr.drawImage(hero, j*imgDim, i*imgDim, null);
+					break;
+				case 'A':
+					gr.drawImage(armedHero, j*imgDim, i*imgDim, null);
+					break;
+					
+				case 'D':
+					gr.drawImage(dragon, j*imgDim, i*imgDim, null);
+					break;
+				case'd':
+					gr.drawImage(asleepDragon, j*imgDim, i*imgDim, null);
+					break;
+				case'F':
+					gr.drawImage(dragonAndSword, j*imgDim, i*imgDim, null);
+					break;
+				case 'f':
+					gr.drawImage(asleepDragonAndSword, j*imgDim, i*imgDim, null);
+					break;
+					
+				case 'E':
+					gr.drawImage(sword, j*imgDim, i*imgDim, null);
+					break;
+					
+				case 'X':
+					gr.drawImage(wall, j*imgDim, i*imgDim, null);
+					break;
+				case 'S':
+					gr.drawImage(exit, j*imgDim, i*imgDim, null);
+					break;
+					
+				default:
+					break;
+				}
+			}
+		}//*/
 	}
-	
-	
 	
 	public void play(Direction direcao)
 	{
@@ -89,12 +122,12 @@ public class GameHandler extends JPanel {
 		//disable dos butoes
 			disableButtons();
 		}
-		MainWindow.mazeWindow.setText(getDisplay());
-		setStatus(objMaze);
+		repaint();
+		ShowStatus.setStatus(objMaze);
 		repaint();
 	}
 	
-	public String getDisplay() {
+	/*public String getDisplay() {
 		HashMap<Point,General> maze = objMaze.getMaze();
 		Point dims = objMaze.getDimensions();
 		int height=dims.x, width=dims.y;
@@ -119,7 +152,7 @@ public class GameHandler extends JPanel {
 			disp += "\n";
 		}
 		return disp;
-	}
+	}*/
 	
 	private void disableButtons()
 	{

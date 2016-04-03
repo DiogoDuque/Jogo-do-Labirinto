@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.awt.Point;
-import java.nio.charset.Charset;
 
 public class MazeBuilder {
 
