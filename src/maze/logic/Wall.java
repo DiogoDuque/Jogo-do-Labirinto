@@ -1,3 +1,7 @@
+/**
+ * Esta classe é usada para representar as Paredes presente no labirinto.
+ */
+
 package maze.logic;
 
 import java.awt.Point;

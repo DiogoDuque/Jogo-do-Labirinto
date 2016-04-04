@@ -1,3 +1,7 @@
+/**
+ * Esta classe é usada para representar a Espada presente no labirinto.
+ */
+
 package maze.logic;
 
 import java.awt.Point;

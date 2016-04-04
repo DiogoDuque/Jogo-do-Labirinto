@@ -1,3 +1,7 @@
+/**
+ * Centro da logica do jogo. É onde está guardado o labirinto e os seus objetos.
+ */
+
 package maze.logic;
 
 import java.awt.Point;

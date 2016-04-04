@@ -1,3 +1,7 @@
+/**
+ * Esta classe é responsavel por gerar um labirinto aleatorio.
+ */
+
 package maze.logic;
 
 import java.util.ArrayDeque;
@@ -212,6 +216,10 @@ public class MazeBuilder {
 		
 	}
 	
+	/**
+	 * 
+	 * @return array bidimensional de char representativos dos objetos.
+	 */
 	public char[][] getMaze()
 	{
 		return maze;
@@ -221,50 +229,50 @@ public class MazeBuilder {
 	 * FUNCAO USADA APENAS PARA DEBUGGING!
 	 * Mostra na consola o estado atual das estruturas maze, visitedCells e pathHistory.
 	 */
-//	public void displayFull()
-//	{
-//		System.out.println("");
-//		System.out.println("");
-//		System.out.println("Maze");
-//		for (int i = 0; i < maze.length; i++) {
-//			for (int j = 0; j < maze[0].length; j++) {
-//				System.out.print(maze[i][j] + " ");
-//			}
-//			System.out.println("");
-//		}
-//		
-//		System.out.println("");
-//		
-//		System.out.println("VisitedCells");
-//		for (int i = 0; i < visitedCells.length; i++) {
-//			for (int j = 0; j < visitedCells[0].length; j++) {
-//				System.out.print(visitedCells[i][j] + " ");
-//			}
-//			System.out.println("");
-//		}
-//
-//		System.out.println("");
-//		
-//		System.out.println("pathHistory");
-//		ArrayDeque<Point> temp = pathHistory.clone();
-//		while (!pathHistory.isEmpty()) {
-//			System.out.println(pathHistory.pop());
-//		}
-//		pathHistory=temp;
-//	}
+	public void displayFull()
+	{
+		System.out.println("");
+		System.out.println("");
+		System.out.println("Maze");
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				System.out.print(maze[i][j] + " ");
+			}
+			System.out.println("");
+		}
+		
+		System.out.println("");
+		
+		System.out.println("VisitedCells");
+		for (int i = 0; i < visitedCells.length; i++) {
+			for (int j = 0; j < visitedCells[0].length; j++) {
+				System.out.print(visitedCells[i][j] + " ");
+			}
+			System.out.println("");
+		}
+
+		System.out.println("");
+		
+		System.out.println("pathHistory");
+		ArrayDeque<Point> temp = pathHistory.clone();
+		while (!pathHistory.isEmpty()) {
+			System.out.println(pathHistory.pop());
+		}
+		pathHistory=temp;
+	}
 	
 	/**
 	 * FUNCAO USADA APENAS PARA DEBUGGING!
 	 * Mostra na consola o estado atual da estrutura maze.
 	 */
-//	public void display() // so para debugging
-//	{
-//		for (int i = 0; i < maze.length; i++) {
-//			for (int j = 0; j < maze[0].length; j++) {
-//				System.out.print(maze[i][j] + " ");
-//			}
-//			System.out.println("");
-//		}
-//		System.out.println("");
-//	}
+	public void display() // so para debugging
+	{
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				System.out.print(maze[i][j] + " ");
+			}
+			System.out.println("");
+		}
+		System.out.println("");
+	}
 }

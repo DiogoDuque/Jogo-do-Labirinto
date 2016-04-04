@@ -1,3 +1,7 @@
+/**
+ * Esta classe é usada para representar os Dragões presente no labirinto.
+ */
+
 package maze.logic;
 
 import java.awt.Point;
