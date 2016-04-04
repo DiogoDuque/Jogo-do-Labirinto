@@ -270,10 +270,95 @@ public class CreateMaze extends JFrame implements MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	public boolean validateMaze(Maze maze){
-		isMazeValidated =true;
-		return true;
+		int height=maze.getDimensions().x, width=maze.getDimensions().y;
+		char[][] clonedMaze = new char[height][width];
+		Boolean foundExit=null, foundSword=null;
+		Integer numDragons=0;
+		Point hero=null;
+		
+		//clone maze
+		for(int i=0; i<height; i++)
+			for(int j=0; j<width; j++)
+			{
+				clonedMaze[i][j]=maze.getMaze().get(new Point(i,j)).getSymbol();
+				switch(clonedMaze[i][j])
+				{
+				case 'D':
+					numDragons++;
+					break;
+				case 'H':
+					if(hero != null)
+						return false; //mais de 1 hero
+					hero=new Point(i,j);
+					break;
+				case 'E':
+					if(foundSword != null) //mais de 1 espada
+						return false;
+					foundSword=false;
+					break;
+				case 'S':
+					if(foundExit != null) //mais de 1 espada
+						return false;
+					foundExit=false;
+					break;
+				default:
+					break;
+				}
+			}
+		
+		if(numDragons==0) //se ainda nao tem dragoes
+			return false;
+		
+		if(hero==null || foundSword==null || foundExit==null) //falta espada, saida e/ou heroi
+			return false;
+		
+		return auxValidateMaze(clonedMaze, hero, numDragons, foundSword, foundExit);
 	}
+	
+	private boolean auxValidateMaze(char[][] clonedMaze, Point hero, Integer numDragons, Boolean foundSword, Boolean foundExit)
+	{
+		if(numDragons==0 && foundSword==true && foundExit==true) //se todos os objetos estiverem alcancaveis
+			return true;
+		
+		if(hero.x<=0 || hero.y<=0 || hero.x>=clonedMaze.length || hero.y>=clonedMaze[0].length) //se estiver out of bounds
+			return false;
+		
+		switch(clonedMaze[hero.x][hero.y])
+		{
+		case 'H':
+		case 'X':
+			return false;
+			
+		case 'D':
+			numDragons--;
+			break;
+			
+		case 'E':
+			foundSword=true;
+			break;
+			
+		case 'S':
+			foundExit=true;
+			break;
+			
+		default:
+			break;
+		}
+		
+		clonedMaze[hero.x][hero.y]='H'; //marcar como visitado
+		
+		//tentar à volta
+		if (auxValidateMaze(clonedMaze,new Point(hero.x,hero.y-1), numDragons, foundSword, foundExit))
+			return true;
+		else if(auxValidateMaze(clonedMaze,new Point(hero.x,hero.y+1), numDragons, foundSword, foundExit))
+			return true;
+		else if(auxValidateMaze(clonedMaze,new Point(hero.x-1,hero.y), numDragons, foundSword, foundExit))
+			return true;
+		else return(auxValidateMaze(clonedMaze,new Point(hero.x+1,hero.y), numDragons, foundSword, foundExit));
+	}
+	
 	public Maze getCreatedMaze(){
 		return objMaze;
 	}
