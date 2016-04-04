@@ -102,7 +102,10 @@ public class Maze {
 	public Dragon getDragonByIndex(int index) {return dragons.get(index);}
 	
 	public int getDragonsSize() {return dragons.size();}
-
+	
+	public ArrayList<Dragon> getDragons(){
+		return dragons;
+	}
 	//GETS HERO
 	
 	public Hero getHero() {return hero;}

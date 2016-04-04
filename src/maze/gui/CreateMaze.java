@@ -19,10 +19,15 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Point;
 
+import maze.logic.Dragon;
 import maze.logic.Exit;
 import maze.logic.General;
+import maze.logic.Hero;
+import maze.logic.Maze;
 import maze.logic.Wall;
 import maze.logic.Maze.*;
+import maze.logic.Sword;
+
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -33,9 +38,14 @@ public class CreateMaze implements MouseListener {
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
-	public maze.logic.Maze objMaze;
+	private maze.logic.Maze objMaze;
 	private GameHandler handler;
-	
+	private Type type;
+	private boolean isMazeValidated;
+	public enum Type
+	{
+		Dragon, Wall, Hero, Sword, Exit
+	} 
 	/**
 	 * Launch the application.
 	 */
@@ -70,7 +80,7 @@ public class CreateMaze implements MouseListener {
 		final CreateMaze tempRef = this;
 		frame = new JFrame();
 		frame.setTitle("Cria o teu labirinto!");
-		frame.setBounds(20, 20, 1031, 700);
+		frame.setBounds(20, 10, 1031, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		handler = new GameHandler(tempRef);
@@ -84,14 +94,14 @@ public class CreateMaze implements MouseListener {
 		panel.add(lblSelectOne);
 		
 		altura = new JTextField();
-		altura.setText("11");
 		altura.setBounds(95, 21, 21, 20);
+		altura.setText("11");
 		panel.add(altura);
 		altura.setColumns(10);
 		
 		largura = new JTextField();
-		largura.setText("11");
 		largura.setBounds(132, 21, 21, 20);
+		largura.setText("11");
 		panel.add(largura);
 		largura.setColumns(10);
 		
@@ -100,8 +110,8 @@ public class CreateMaze implements MouseListener {
 		panel.add(lblX);
 		
 		JLabel lblTamanho = new JLabel("Tamanho");
-		lblTamanho.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblTamanho.setBounds(27, 24, 58, 14);
+		lblTamanho.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel.add(lblTamanho);
 		
 		JButton btnOk = new JButton("OK");
@@ -109,33 +119,75 @@ public class CreateMaze implements MouseListener {
 		panel.add(btnOk);
 		
 		JLabel lblNmeroDeDrages = new JLabel("N\u00FAmero de Drag\u00F5es");
-		lblNmeroDeDrages.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNmeroDeDrages.setBounds(27, 58, 109, 20);
+		lblNmeroDeDrages.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel.add(lblNmeroDeDrages);
 		
 		numDragoes = new JTextField();
-		numDragoes.setText("1");
 		numDragoes.setBounds(153, 59, 21, 20);
+		numDragoes.setText("1");
 		panel.add(numDragoes);
 		numDragoes.setColumns(10);
 		
 		
 		JButton btnCheckLabirinto = new JButton("Testar Labirinto!");
-		btnCheckLabirinto.setBounds(883, 272, 121, 23);
+		btnCheckLabirinto.setBounds(859, 272, 145, 74);
 		panel.add(btnCheckLabirinto);
+		btnCheckLabirinto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				validateMaze(objMaze);
+					
+			}});
+		
 		
 		final JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(859, 45, 145, 22);
 		comboBox.setMaximumRowCount(5);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Parede", "Her\u00F3i", "Drag\u00E3o", "Sa\u00EDda", "Espada"}));
-		comboBox.setBounds(859, 45, 145, 22);
 		panel.add(comboBox);
-		
+		type = Type.Wall;
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedIndex() == 0)
+					type = Type.Wall;
+				if (comboBox.getSelectedIndex() == 1)
+					type = Type.Hero;
+				if (comboBox.getSelectedIndex() == 2)
+					type = Type.Dragon;
+				if (comboBox.getSelectedIndex() == 3)
+					type = Type.Exit;
+				if (comboBox.getSelectedIndex() == 4)
+					type = Type.Sword;
+				
+			}
+		});
 		final JPanel panel_1 = new JPanel();
 		panel_1.setBounds(10, 88, 779, 545);
 		panel.add(panel_1);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(DragonType.values()));
+		comboBox_1.setMaximumRowCount(3);
+		comboBox_1.setBounds(859, 133, 146, 23);
+		panel.add(comboBox_1);
+		
+		JLabel lblTipoDeDrages = new JLabel("Tipo de Drag\u00F5es");
+		lblTipoDeDrages.setBounds(859, 88, 145, 34);
+		panel.add(lblTipoDeDrages);
+		
+		JButton btnPlay = new JButton("Jogar!");
+		btnPlay.setBounds(859, 408, 145, 74);
+		panel.add(btnPlay);
 		panel_1.addMouseListener(tempRef);
 		
-		
+		btnPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(isMazeValidated){
+					
+				handler.objMaze=objMaze;
+					System.exit(0);}
+					
+			}});
 		
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -144,12 +196,14 @@ public class CreateMaze implements MouseListener {
 				alt=Integer.parseInt(altura.getText());
 				larg=Integer.parseInt(largura.getText());
 				
-				if(alt > 17)
-					alt=17;
-				if(larg > 19)
-					larg=19;
+				if(alt > 17){
+					altura.setText("17");
+					alt=17;}
+				if(larg > 19){
+					altura.setText("19");
+					larg=19;}
 				
-				handler.objMaze= new maze.logic.Maze(alt,larg);
+				handler.objMaze= new maze.logic.Maze(larg,alt);
 				handler.setVisible(true);
 				handler.setBounds(30, 115, 638, 723);
 				
@@ -157,48 +211,7 @@ public class CreateMaze implements MouseListener {
 				handler.repaint();	
 				
 			}});
-//		panel_1.addMouseListener(new MouseAdapter(){
-//			
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-////					
-//					}
-//				
-//
-//				@Override
-//				public void mouseEntered(MouseEvent e) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//
-//				@Override
-//				public void mouseExited(MouseEvent e) {
-//					// TODO Auto-generated method stub
-//					
-//				}
-//
-//				@Override
-//				public void mousePressed(MouseEvent e) {
-//					// TODO Auto-generated method stub
-//					HashMap<Point,General> maze = objMaze.getMaze();
-//				
-//												
-//										
-//					Wall wall = new Wall(5,5,maze);
-//         			maze.put(new Point(5,5),wall);
-//         			numDragoes.setText("11");
-//							
-//					handler.repaint();}
-//						
-//				
-//
-//				@Override
-//				public void mouseReleased(MouseEvent e) {
-//					// TODO Auto-generated method stub
-//					
-//				}	
-//		});
-		
+
 }
 
 	@Override
@@ -222,21 +235,29 @@ public class CreateMaze implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		//handler.setBounds(30, 115, 638, 723)
+		{
+			int x = (int) ((e.getX()-20)/32 );
+			int y = (int)((e.getY())/32 -1);
+		if(type == Type.Wall){
+		Wall wall = new Wall(y,x,handler.objMaze.getMaze());
+		handler.objMaze.getMaze().put(new Point(y,x),wall);}
+		if(type == Type.Hero){
+			Hero hero = new Hero(y,x,handler.objMaze.getMaze());
+			handler.objMaze.getMaze().put(new Point(y,x),hero);}
+		if(type == Type.Sword){
+			Sword sword = new Sword(y,x,handler.objMaze.getMaze());
+			handler.objMaze.getMaze().put(new Point(y,x),sword);}
+		if(type == Type.Exit){
+			Exit exit = new Exit(y,x,handler.objMaze.getMaze());
+			handler.objMaze.getMaze().put(new Point(y,x),exit);}
+		if(type == Type.Dragon){
+			Dragon dragon = new Dragon(y,x,handler.objMaze.getMaze());
+			handler.objMaze.getMaze().put(new Point(y,x),dragon);
+			handler.objMaze.getDragons().add(dragon);}
+		}
 		
-//		
-		Wall wall = new Wall(5,5,handler.objMaze.getMaze());
-		handler.objMaze.getMaze().put(new Point(5,5),wall);
-//		handler.setVisible(true);
-//		handler.setBounds(30, 115, 638, 723);
-//		
-		
-		handler.repaint();			
-							
-			
- 			numDragoes.setText("11");
-					
-			
-				
+		handler.repaint();				
 	}
 
 	@Override
@@ -244,5 +265,11 @@ public class CreateMaze implements MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public boolean validateMaze(Maze maze){
+		isMazeValidated =true;
+		return true;
+	}
+	public Maze getCreatedMaze(){
+		return objMaze;
+	}
 }

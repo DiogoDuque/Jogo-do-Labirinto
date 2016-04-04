@@ -36,6 +36,7 @@ public class MainWindow {
 	public JButton btnBaixo;
 	public JButton btnEsquerda;
 	public JButton btnDireita;
+	private CreateMaze createMaze;
 
 	/**
 	 * Launch the application.
@@ -189,11 +190,14 @@ public class MainWindow {
 				larg=Integer.parseInt(largura.getText());
 				numD=Integer.parseInt(numDragoes.getText());
 				maze.logic.MazeBuilder charMaze;
-				if(alt > 17)
-					alt=17;
-				if(larg > 19)
-					larg=19;
+				if(alt > 17){
+					altura.setText("17");
+					alt=17;}
+				if(larg > 19){
+					largura.setText("19");
+					larg=19;}
 				try {
+					
 				charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
 				}
 				catch(IllegalArgumentException exception)
@@ -232,6 +236,16 @@ public class MainWindow {
 		});
 		btnTerminarPrograma.setBounds(722, 78, 148, 38);
 		frame.getContentPane().add(btnTerminarPrograma);
+		
+		
+		JButton btnCreateMaze = new JButton("Cria o teu labirinto!");
+		btnCreateMaze.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createMaze = new CreateMaze();
+			}
+		});
+		btnCreateMaze.setBounds(722, 138 , 148, 38);
+		frame.getContentPane().add(btnCreateMaze);
 		
 	}
 	

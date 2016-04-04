@@ -15,7 +15,7 @@ public class MazeBuilder {
 	public MazeBuilder(int height, int width, int numDragons) {
 		if ((height & 1) == 0 || (width & 1) == 0)
 			throw new IllegalArgumentException("ERRO: Altura e largura do labirinto devem ser impares!");
-		if (height>23 || width>21)
+		if (height>17 || width>19)
 			throw new IllegalArgumentException("ERRO: Dimensoes do labirinto são demasiado grandes!");
 		if(numDragons>(height/5)*(width/5))
 			throw new IllegalArgumentException("Existem demasiados dragoes para o tamanho do labirinto!");

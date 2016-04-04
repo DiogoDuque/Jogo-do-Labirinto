@@ -9,7 +9,7 @@ public class Dragon extends General {
 
 	public boolean acordado;
 	
-	Dragon(int x, int y, HashMap<Point,General> maze)
+	public Dragon(int x, int y, HashMap<Point,General> maze)
 	{
 		super(x,y,'D',maze);
 		acordado = true;
