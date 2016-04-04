@@ -19,6 +19,7 @@ public class TestMazeWithStaticDragon {
          			{ 'X', 'E', 'X', ' ', 'X' },
          			{ 'X', ' ', 'D', 'D', 'X' },
          			{ 'X', 'X', 'X', 'X', 'X' } };
+	@SuppressWarnings("unused")
 	@Test //a
 	public void testMoveHeroToFreeCell() {
 		MazeBuilder maze2 =new MazeBuilder(11, 11, 2);

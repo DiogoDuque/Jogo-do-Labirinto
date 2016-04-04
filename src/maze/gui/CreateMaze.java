@@ -5,17 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
 import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -23,19 +17,21 @@ import java.awt.Point;
 
 import maze.logic.Dragon;
 import maze.logic.Exit;
-import maze.logic.General;
 import maze.logic.Hero;
 import maze.logic.Maze;
 import maze.logic.Wall;
 import maze.logic.Maze.*;
 import maze.logic.Sword;
 
-import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
 public class CreateMaze extends JFrame implements MouseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4607218142008331947L;
 	private JFrame frame;
 	private JTextField altura;
 	private JTextField largura;
@@ -49,7 +45,6 @@ public class CreateMaze extends JFrame implements MouseListener {
 	private int numDragons;
 	private boolean foundSword, foundExit;
 
-	private static JFrame f;	
 	public enum Type
 	{
 		Dragon, Wall, Hero, Sword, Exit
@@ -83,6 +78,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		
 		final CreateMaze tempRef = this;

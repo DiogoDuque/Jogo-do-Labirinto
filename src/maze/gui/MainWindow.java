@@ -28,7 +28,6 @@ public class MainWindow {
 	private GameHandler handler;
 	private ShowStatus showStatus;
 	private JFrame frame;
-	private JFrame frame2;
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
@@ -37,8 +36,6 @@ public class MainWindow {
 	public JButton btnBaixo;
 	public JButton btnEsquerda;
 	public JButton btnDireita;
-	private CreateMaze createMaze;
-
 	/**
 	 * Launch the application.
 	 */
@@ -65,6 +62,7 @@ public class MainWindow {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 		
 		final MainWindow tempRef = this; //para uso na inicializacao do GameHandler
@@ -243,7 +241,7 @@ public class MainWindow {
 		JButton btnCreateMaze = new JButton("Cria o teu labirinto!");
 		btnCreateMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createMaze.main(null);
+				CreateMaze.main(null);
 				
 			}
 		});
@@ -253,13 +251,12 @@ public class MainWindow {
 		JButton btnPlay = new JButton("Joga com teu labirinto!");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(CreateMaze.getHandler()!= null){
 				handler = new GameHandler(tempRef);
 				handler = CreateMaze.getHandler();
-				
 				handler.setVisible(true);
 				handler.setBounds(30, 115, 638, 723);
 				frame.getContentPane().add(handler);
-				
 				ShowStatus.setStatus(handler.objMaze);
 				handler.repaint();
 				ShowStatus.setStatus(handler.objMaze);
@@ -269,7 +266,7 @@ public class MainWindow {
 				btnCima.setEnabled(true);
 				btnEsquerda.setEnabled(true);
 				btnDireita.setEnabled(true);
-				
+				}
 			}
 		});
 		btnPlay.setBounds(722, 198 , 148, 38);

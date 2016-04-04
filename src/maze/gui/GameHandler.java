@@ -5,11 +5,8 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
-import maze.logic.Exit;
 import maze.logic.General;
 import maze.logic.Maze.*;
-import maze.gui.*;
-
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.io.File;
@@ -19,15 +16,18 @@ import javax.imageio.ImageIO;
 
 public class GameHandler extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 249278719736405813L;
 	public maze.logic.Maze objMaze;
-	private CreateMaze CreatedMaze;
 	public DragonType dragonType;
 	private static MainWindow window;
 	public BufferedImage dragon, dragonAndSword, asleepDragonAndSword, asleepDragon, hero, armedHero, sword, wall, exit, none;
 	
 	GameHandler(final MainWindow window)
 	{
-		this.window=window;
+		GameHandler.window=window;
 		try {
 			hero = ImageIO.read(new File("res/hero.png"));
 			armedHero = ImageIO.read(new File("res/armedHero.png"));
@@ -48,7 +48,7 @@ public class GameHandler extends JPanel {
 	
 	public GameHandler(CreateMaze maze, MainWindow window) {
 		try {
-			this.window=window;
+			GameHandler.window=window;
 			hero = ImageIO.read(new File("res/hero.png"));
 			armedHero = ImageIO.read(new File("res/armedHero.png"));
 			dragon = ImageIO.read(new File("res/dragon.png"));
