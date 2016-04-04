@@ -44,6 +44,9 @@ public class CreateMaze extends JFrame implements MouseListener {
 	private static GameHandler handler;
 	private Type type;
 	private boolean isMazeValidated;
+	
+	private int numDragons;
+	private boolean foundSword, foundExit;
 
 	private static JFrame f;	
 	public enum Type
@@ -276,8 +279,8 @@ public class CreateMaze extends JFrame implements MouseListener {
 	public boolean validateMaze(Maze maze){
 		int height=maze.getHeight(), width=maze.getWidth();
 		char[][] clonedMaze = new char[height][width];
-		Boolean foundExit=null, foundSword=null;
-		Integer numDragons=0;
+		int numSwords=0, numExits=0;
+		numDragons=0;
 		Point hero=null;
 		
 		//clone maze
@@ -295,16 +298,14 @@ public class CreateMaze extends JFrame implements MouseListener {
 					if(hero != null)
 						return false; //mais de 1 hero
 					hero=new Point(i,j);
+					clonedMaze[i][j]='h';
+					
 					break;
 				case 'E':
-					if(foundSword != null) //mais de 1 espada
-						return false;
-					foundSword=false;
+					numSwords++;
 					break;
 				case 'S':
-					if(foundExit != null) //mais de 1 espada
-						return false;
-					foundExit=false;
+					numExits++;
 					break;
 				default:
 					break;
@@ -314,16 +315,25 @@ public class CreateMaze extends JFrame implements MouseListener {
 		if(numDragons==0) //se ainda nao tem dragoes
 			return false;
 		
-		if(hero==null || foundSword==null || foundExit==null) //falta espada, saida e/ou heroi
+		if(hero==null || numSwords != 1 || numExits != 1) //falta espada, saida e/ou heroi
 			return false;
 		
-		return  auxValidateMaze(clonedMaze, hero, numDragons, foundSword, foundExit);
+		foundSword=false;
+		foundExit=false;
+		
+		boolean ret = auxValidateMaze(clonedMaze, hero);
+		System.out.println("FINISH");
+		return ret;
+		
 	}
 	
-	private boolean auxValidateMaze(char[][] clonedMaze, Point hero, Integer numDragons, Boolean foundSword, Boolean foundExit)
+	private boolean auxValidateMaze(char[][] clonedMaze, Point hero)
 	{
 		if(numDragons==0 && foundSword==true && foundExit==true) //se todos os objetos estiverem alcancaveis
+		{
+			System.out.println("TRUE");
 			return true;
+		}
 		
 		if(hero.x<=0 || hero.y<=0 || hero.x>=clonedMaze.length || hero.y>=clonedMaze[0].length) //se estiver out of bounds
 			return false;
@@ -353,13 +363,13 @@ public class CreateMaze extends JFrame implements MouseListener {
 		clonedMaze[hero.x][hero.y]='H'; //marcar como visitado
 		
 		//tentar à volta
-		if (auxValidateMaze(clonedMaze,new Point(hero.x,hero.y-1), numDragons, foundSword, foundExit))
+		if (auxValidateMaze(clonedMaze,new Point(hero.x,hero.y-1)))
 			return true;
-		else if(auxValidateMaze(clonedMaze,new Point(hero.x,hero.y+1), numDragons, foundSword, foundExit))
+		else if(auxValidateMaze(clonedMaze,new Point(hero.x,hero.y+1)))
 			return true;
-		else if(auxValidateMaze(clonedMaze,new Point(hero.x-1,hero.y), numDragons, foundSword, foundExit))
+		else if(auxValidateMaze(clonedMaze,new Point(hero.x-1,hero.y)))
 			return true;
-		else return(auxValidateMaze(clonedMaze,new Point(hero.x+1,hero.y), numDragons, foundSword, foundExit));
+		else return(auxValidateMaze(clonedMaze,new Point(hero.x+1,hero.y)));
 	}
 	
 	public Maze getCreatedMaze(){
