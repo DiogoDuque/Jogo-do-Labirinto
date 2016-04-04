@@ -80,42 +80,11 @@ public class MazeBuilder {
 		generate();
 		
 		//colocar outros objetos/personagens
-		ArrayList<Character> objs = new ArrayList<Character>(); //nao dava para fazer so de char
-		objs.add('H');
-		
-		while(numDragons!=0)
-		{
-			objs.add('D');
-			numDragons--;
-		}
-		
-		objs.add('E');
-		
-		while(!objs.isEmpty())
-		{
-			int h = ThreadLocalRandom.current().nextInt(0,height);
-			int w = ThreadLocalRandom.current().nextInt(0,width);
-			
-			if(h<=0 || w<=0 || h>=height-1 || w>=width-1) //se fora dos limites
-				continue;
-			
-			if(objs.size()==1) //se so sobra o heroi
-			{
-				if(maze[h+1][w]=='D'||maze[h-1][w]=='D'||
-						maze[h][w+1]=='D'||maze[h][w-1]=='D') //se dragao perto
-					continue;
-			}
-			
-			if(maze[h][w]==' ')
-			{
-				maze[h][w]=(char)objs.get(objs.size()-1);
-				objs.remove(objs.size()-1);
-			}
-		}
+		generateCharacters(numDragons, height, width);
 	}
 
 	/**
-	 * gera um labirinto vazio, somente com paredes e saida
+	 * Gera um labirinto vazio, somente com paredes e saida.
 	 */
 	private void generate() {
 		while (!pathHistory.isEmpty()) {			
@@ -156,6 +125,8 @@ public class MazeBuilder {
 	}
 
 	/**
+	 * @param x possivel coordenada x da guidingCell.
+	 * @param y possivel coordenada y da guidingCell.
 	 * @return true se a guidingCell se puder mover para estas coordenadas, falso em caso contrário.
 	 */
 	private boolean canMove(int x, int y) {
@@ -166,6 +137,81 @@ public class MazeBuilder {
 		return true;
 	}
 
+	/**
+	 * Gerar os dragões, o heroi e a espada.
+	 * @param numDragons número de dragoes para inserir no labirinto.
+	 * @param height altura do labirinto.
+	 * @param width largura do labirinto.
+	 */
+	private void generateCharacters(int numDragons, int height, int width)
+	{
+		//por dragoes no labirinto
+		while(numDragons>0)
+		{
+			int h = ThreadLocalRandom.current().nextInt(1,height-1);
+			int w = ThreadLocalRandom.current().nextInt(1,width-1);
+			
+			if(h<=0 || w<=0 || h>=height-1 || w>=width-1) //se fora dos limites
+				continue;
+			
+			if(maze[h][w]==' ')
+			{
+				maze[h][w]='D';
+				numDragons--;
+			}
+		}
+		
+		//por heroi e espada
+		while(true)
+		{
+			Point hero= new Point(ThreadLocalRandom.current().nextInt(1,height-1),ThreadLocalRandom.current().nextInt(1,width-1));
+			Point sword= new Point(ThreadLocalRandom.current().nextInt(1,height-1),ThreadLocalRandom.current().nextInt(1,width-1));
+			
+			if(hero.equals(sword) || maze[hero.x][hero.y] != ' ' || maze[sword.x][sword.y] != ' ')
+				continue;
+			
+			char[][] clonedMaze = new char[height][width];
+			for(int i=0; i<height; i++)
+				for(int j=0; j<width; j++)
+					clonedMaze[i][j]=maze[i][j];
+			if(heroCanReachSword(clonedMaze, hero, sword))
+			{
+				maze[hero.x][hero.y]='H';
+				maze[sword.x][sword.y]='E';
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Chamada recursivamente, permite perceber se o heroi tem um caminho livre de dragões até à espada.
+	 * @param mazeWithDragons labirinto já com dragoes inseridos.
+	 * @param hero coordenadas do heroi no labirinto.
+	 * @param sword coordenadas da espada no labirinto.
+	 * @return true se o heroi tiver um caminho sem dragões até à espada, false em caso contrário.
+	 */
+	public boolean heroCanReachSword(char[][] mazeWithDragons, Point hero, Point sword)
+	{
+		if(hero.x<=0 || hero.y<=0 || hero.x>=mazeWithDragons.length-1 || hero.y>=mazeWithDragons[0].length-1)
+			return false;
+		
+		if(hero.equals(sword))
+			return true;
+		
+		if(mazeWithDragons[hero.x][hero.y] != ' ')
+			return false;
+		
+		mazeWithDragons[hero.x][hero.y]='H';
+		if (heroCanReachSword(mazeWithDragons,new Point(hero.x,hero.y-1),sword))
+			return true;
+		else if(heroCanReachSword(mazeWithDragons,new Point(hero.x,hero.y+1),sword))
+			return true;
+		else if(heroCanReachSword(mazeWithDragons,new Point(hero.x+1,hero.y),sword))
+			return true;
+		else return(heroCanReachSword(mazeWithDragons,new Point(hero.x-1,hero.y),sword));
+		
+	}
+	
 	public char[][] getMaze()
 	{
 		return maze;
@@ -219,5 +265,6 @@ public class MazeBuilder {
 			}
 			System.out.println("");
 		}
+		System.out.println("");
 	}
 }
