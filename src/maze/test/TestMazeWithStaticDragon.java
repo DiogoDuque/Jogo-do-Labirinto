@@ -80,14 +80,27 @@ public class TestMazeWithStaticDragon {
 	{
 		Maze maze = new Maze(m1);
 		for(int i=0; i<=2; i++)
+		{
 			maze.moveHeroLeft();
+			maze.proximityHeroDragon();
+		}
 		for(int i=0; i<=2; i++)
+		{
 			maze.moveHeroDown();
+			maze.proximityHeroDragon();
+		}
 		for(int i=0; i<=2; i++)
+		{
 			maze.moveHeroRight();
-		for(int i=0; i<=3; i++)
+			maze.proximityHeroDragon();
+		}
+		for(int i=0; i<=2; i++)
+		{
 			maze.moveHeroUp();
-		//maze.moveHeroRight();
+			maze.proximityHeroDragon();
+		}
+		maze.moveHeroRight();
+		maze.proximityHeroDragon();
 		
 		assertEquals(MazeStatus.Victory, maze.getStatus());
 	}//*/
