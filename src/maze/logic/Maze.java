@@ -157,7 +157,7 @@ public class Maze {
 	
 	/**
 	 * (Re)define o Hero.
-	 * @param hero
+	 * @param hero novo Hero.
 	 */
 	public void setHero(Hero hero){
 		this.hero=hero;
