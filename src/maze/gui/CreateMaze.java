@@ -44,6 +44,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 	private static GameHandler handler;
 	private Type type;
 	private boolean isMazeValidated;
+	private MainWindow window;
 	
 	private int numDragons;
 	private boolean foundSword, foundExit;
@@ -90,7 +91,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 		frame.setBounds(20, 10, 1031, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addMouseListener(tempRef);
-		handler = new GameHandler(tempRef);
+		handler = new GameHandler(tempRef,window);
 		frame.getContentPane().add(handler);
 		final JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
@@ -174,11 +175,16 @@ public class CreateMaze extends JFrame implements MouseListener {
 		panel_1.setBounds(10, 88, 779, 545);
 		panel.add(panel_1);
 		
-		JComboBox comboBox_1 = new JComboBox();
+		final JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setModel(new DefaultComboBoxModel(DragonType.values()));
 		comboBox_1.setMaximumRowCount(3);
 		comboBox_1.setBounds(859, 133, 146, 23);
 		panel.add(comboBox_1);
+		comboBox_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				handler.dragonType=(DragonType) comboBox_1.getSelectedItem();
+			}});
+		
 		
 		JLabel lblTipoDeDrages = new JLabel("Tipo de Drag\u00F5es");
 		lblTipoDeDrages.setBounds(859, 88, 145, 34);
@@ -305,6 +311,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 					numSwords++;
 					break;
 				case 'S':
+					
 					numExits++;
 					break;
 				default:
@@ -322,7 +329,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 		foundExit=false;
 		
 		boolean ret = auxValidateMaze(clonedMaze, hero);
-		System.out.println("FINISH");
+		
 		return ret;
 		
 	}
@@ -331,7 +338,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 	{
 		if(numDragons==0 && foundSword==true && foundExit==true) //se todos os objetos estiverem alcancaveis
 		{
-			System.out.println("TRUE");
+			
 			return true;
 		}
 		
@@ -377,6 +384,9 @@ public class CreateMaze extends JFrame implements MouseListener {
 	}
 	public static GameHandler getHandler(){
 		return handler;
+	}
+	public MainWindow getMainWindow(){
+		return window;
 	}
 
 //	public static void construct(int size) {

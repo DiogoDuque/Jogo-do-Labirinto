@@ -20,9 +20,9 @@ import javax.imageio.ImageIO;
 public class GameHandler extends JPanel {
 	
 	public maze.logic.Maze objMaze;
-	
+	private CreateMaze CreatedMaze;
 	public DragonType dragonType;
-	private MainWindow window;
+	private static MainWindow window;
 	public BufferedImage dragon, dragonAndSword, asleepDragonAndSword, asleepDragon, hero, armedHero, sword, wall, exit, none;
 	
 	GameHandler(final MainWindow window)
@@ -46,8 +46,9 @@ public class GameHandler extends JPanel {
 	}
 
 	
-	public GameHandler(CreateMaze window) {
+	public GameHandler(CreateMaze maze, MainWindow window) {
 		try {
+			this.window=window;
 			hero = ImageIO.read(new File("res/hero.png"));
 			armedHero = ImageIO.read(new File("res/armedHero.png"));
 			dragon = ImageIO.read(new File("res/dragon.png"));
