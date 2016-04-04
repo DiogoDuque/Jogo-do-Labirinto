@@ -7,7 +7,7 @@ public class General {
 
 	protected Point p;
 	
-	protected char symbol;
+	protected char symbol ;
 	
 	protected HashMap<Point,General> maze;
 	

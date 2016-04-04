@@ -32,6 +32,12 @@ public class Maze {
 	{
 		HeroDied, HeroUnarmed, HeroArmed, DragonDied, Victory
 	}
+	public int getHeight(){
+		return height;
+	}
+	public int getWidth(){
+		return width;
+	}
 	public Maze(int x, int y){
 		status=MazeStatus.HeroUnarmed;
 		height = y+1;

@@ -40,7 +40,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
-	private maze.logic.Maze objMaze;
+	private static maze.logic.Maze objMaze;
 	private static GameHandler handler;
 	private Type type;
 	private boolean isMazeValidated;
@@ -139,7 +139,9 @@ public class CreateMaze extends JFrame implements MouseListener {
 		panel.add(btnCheckLabirinto);
 		btnCheckLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				validateMaze(objMaze);
+				if(validateMaze(handler.objMaze))
+					isMazeValidated =true;
+					
 					
 			}});
 		
@@ -272,7 +274,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 	}
 	
 	public boolean validateMaze(Maze maze){
-		int height=maze.getDimensions().x, width=maze.getDimensions().y;
+		int height=maze.getHeight(), width=maze.getWidth();
 		char[][] clonedMaze = new char[height][width];
 		Boolean foundExit=null, foundSword=null;
 		Integer numDragons=0;
@@ -282,6 +284,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 		for(int i=0; i<height; i++)
 			for(int j=0; j<width; j++)
 			{
+				if(maze.getMaze().get(new Point(i,j)) != null)
 				clonedMaze[i][j]=maze.getMaze().get(new Point(i,j)).getSymbol();
 				switch(clonedMaze[i][j])
 				{
@@ -314,7 +317,7 @@ public class CreateMaze extends JFrame implements MouseListener {
 		if(hero==null || foundSword==null || foundExit==null) //falta espada, saida e/ou heroi
 			return false;
 		
-		return auxValidateMaze(clonedMaze, hero, numDragons, foundSword, foundExit);
+		return  auxValidateMaze(clonedMaze, hero, numDragons, foundSword, foundExit);
 	}
 	
 	private boolean auxValidateMaze(char[][] clonedMaze, Point hero, Integer numDragons, Boolean foundSword, Boolean foundExit)
