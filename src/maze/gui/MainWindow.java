@@ -175,7 +175,7 @@ public class MainWindow {
 		
 		lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
 		lblMessageBox.setVerticalAlignment(SwingConstants.TOP);
-		lblMessageBox.setBounds(30, 694, 580, 20);
+		lblMessageBox.setBounds(750, 550, 580, 20);
 		frame.getContentPane().add(lblMessageBox);
 		
 		
@@ -253,16 +253,18 @@ public class MainWindow {
 		JButton btnPlay = new JButton("Joga com teu labirinto!");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				handler = new GameHandler(tempRef);
 				handler = CreateMaze.getHandler();
 				
-				handler.dragonType=(DragonType) tipoDragao.getSelectedItem();
 				handler.setVisible(true);
 				handler.setBounds(30, 115, 638, 723);
 				frame.getContentPane().add(handler);
 				
 				ShowStatus.setStatus(handler.objMaze);
 				handler.repaint();
+				ShowStatus.setStatus(handler.objMaze);
 				showStatus.repaint();
+				lblMessageBox.setText("Pode jogar!");
 				btnBaixo.setEnabled(true);
 				btnCima.setEnabled(true);
 				btnEsquerda.setEnabled(true);

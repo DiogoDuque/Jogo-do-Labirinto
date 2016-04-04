@@ -6,6 +6,7 @@ import java.awt.Point;
 
 import org.junit.Test;
 
+import maze.logic.Maze.Direction;
 import maze.logic.Maze.DragonType;
 
 import maze.logic.*;
@@ -25,6 +26,31 @@ public class TestMazeWithDynamicDragon {
 					{ 'X', ' ', 'D', ' ', 'X' },
 					{ 'X', 'E', ' ', ' ', 'X' }, 
 					{ 'X', 'X', 'X', 'X', 'X' } };
+	
+	@Test(timeout=1000)
+	public void isDragonWithSword(){
+		boolean outcome1 = false;	
+		boolean outcome2 = false;
+		
+		while (! outcome1 && !outcome2) {
+			Maze maze = new Maze(m2);
+			
+			
+			maze.moveGeral(Direction.DOWN, maze.getDragonByIndex(0));
+			maze.moveGeral(Direction.LEFT, maze.getDragonByIndex(0));
+		if(maze.getDragonByIndex(0).getSymbol()=='F'){
+			outcome1 = true;
+		}
+			else
+				fail("some error message");
+		maze.moveGeral(Direction.RIGHT, maze.getDragonByIndex(0));
+		if(maze.getDragonByIndex(0).getSymbol()=='D'){
+			outcome2 = true;
+		}
+		else
+			fail("some error message");
+		}
+	}
 	
 	@Test(timeout=1000)
 	public void isDragonSleeping(){
@@ -91,4 +117,3 @@ public class TestMazeWithDynamicDragon {
 	
 	
 	
-
