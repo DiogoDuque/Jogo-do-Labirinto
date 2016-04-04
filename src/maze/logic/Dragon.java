@@ -92,6 +92,10 @@ public class Dragon extends General {
 
 	//OVERRIDES DE GENERAL
 	
+	/**
+	 * override da funcao da superclasse, com uma alteracao para permitir que o dragao esteja "em cima" da espada.
+	 * @see General
+	 */
 	public void setX(int x)
 	{
 		maze.remove(p); //remover dragao do hashmap para depois o reposicionar
@@ -113,6 +117,10 @@ public class Dragon extends General {
 		}
 	}
 	
+	/**
+	 * override da funcao da superclasse, com uma alteracao para permitir que o dragao esteja "em cima" da espada.
+	 * @see General
+	 */
 	public void setY(int y)
 	{
 		maze.remove(p); //remover dragao do hashmap para depois o reposicionar

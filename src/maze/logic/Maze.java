@@ -18,10 +18,7 @@ public class Maze {
 	private Sword sword;
 	private Exit exit;
 	private MazeStatus status;
-
-	public void setHero(Hero hero){
-		this.hero=hero;
-	}
+	
 	public enum DragonType
 	{
 		Static, RandomMovement, SleepingAndRandomMovement
@@ -36,12 +33,7 @@ public class Maze {
 	{
 		HeroDied, HeroUnarmed, HeroArmed, DragonDied, Victory
 	}
-	public int getHeight(){
-		return height;
-	}
-	public int getWidth(){
-		return width;
-	}
+	
 	public Maze(int x, int y){
 		status=MazeStatus.HeroUnarmed;
 		height = y+1;
@@ -63,6 +55,7 @@ public class Maze {
 	}
 		
 	}
+	
 	public Maze(char[][] novomaze) {
 		status=MazeStatus.HeroUnarmed;
 
@@ -101,38 +94,107 @@ public class Maze {
 				}
 			}
 	}
+	
+	/**
+	 * 
+	 * @return altura do labirinto.
+	 */
+	public int getHeight(){
+		return height;
+	}
+	
+	/**
+	 * 
+	 * @return largura do labirinto
+	 */
+	public int getWidth(){
+		return width;
+	}
 
 	//GETS GERAIS
 	
+	/**
+	 * 
+	 * @return HashMap com os objetos do labirinto.
+	 */
 	public HashMap<Point,General> getMaze() {return maze;}
 
+	/**
+	 * 
+	 * @return estado do labirinto.
+	 */
 	public MazeStatus getStatus() {return status;}
 	
+	/**
+	 * 
+	 * @return dimensoes do labirinto num Point.
+	 */
 	public Point getDimensions() {return new Point(height,width);}
 	
 	//GETS DRAGON
 
+	/**
+	 * 
+	 * @param index indice do dragao no ArrayList dragons.
+	 * @return dragao no indice index do ArrayList dragons.
+	 */
 	public Dragon getDragonByIndex(int index) {return dragons.get(index);}
 	
+	/**
+	 * 
+	 * @return numero de dragoes existentes.
+	 */
 	public int getDragonsSize() {return dragons.size();}
 	
+	/**
+	 * 
+	 * @return ArrayList com todos os dragoes do labirinto.
+	 */
 	public ArrayList<Dragon> getDragons(){
 		return dragons;
 	}
 	//GETS HERO
 	
+	/**
+	 * (Re)define o Hero.
+	 * @param hero
+	 */
+	public void setHero(Hero hero){
+		this.hero=hero;
+	}
+	
+	/**
+	 * 
+	 * @return heroi do labirinto.
+	 */
 	public Hero getHero() {return hero;}
 	
+	/**
+	 * 
+	 * @return posicao do heroi no labirinto.
+	 */
 	public Point getHeroPosition() {return hero.getPoint();}
 	
 	//MOVES HERO
 
+	/**
+	 * Move o heroi para a esquerda.
+	 */
 	public void moveHeroLeft() {moveGeral(Direction.LEFT, hero);}
 
+	/**
+	 * Move o heroi para a direita.
+	 */
 	public void moveHeroRight() {moveGeral(Direction.RIGHT, hero);}
 
+	/**
+	 * Move o heroi para cima.
+	 */
 	public void moveHeroUp() {moveGeral(Direction.UP, hero);}
 
+	/**
+	 * Move o heroi para a baixo.
+	 */
 	public void moveHeroDown() {moveGeral(Direction.DOWN, hero);}
 
 
