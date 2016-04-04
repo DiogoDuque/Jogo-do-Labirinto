@@ -68,7 +68,7 @@ public class MainWindow {
 		final MainWindow tempRef = this; //para uso na inicializacao do GameHandler
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1031, 764);
+		frame.setBounds(20, 20, 1031, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -129,6 +129,7 @@ public class MainWindow {
 		btnCima.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.UP);
+				showStatus.repaint();
 			}
 		});
 		btnCima.setBounds(750, 225, 100, 35);
@@ -140,6 +141,7 @@ public class MainWindow {
 		btnEsquerda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.LEFT);
+				showStatus.repaint();
 			}
 		});
 		btnEsquerda.setBounds(690, 270, 100, 35);
@@ -151,6 +153,7 @@ public class MainWindow {
 		btnDireita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.RIGHT);
+				showStatus.repaint();
 			}
 		});
 		btnDireita.setBounds(810, 270, 100, 35);
@@ -162,6 +165,7 @@ public class MainWindow {
 		btnBaixo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handler.play(Direction.DOWN);
+				showStatus.repaint();
 			}
 		});
 		btnBaixo.setBounds(750, 315, 100, 35);
@@ -179,10 +183,16 @@ public class MainWindow {
 		btnGerarNovoLabirinto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int alt,larg,numD;
+				
+				
 				alt=Integer.parseInt(altura.getText());
 				larg=Integer.parseInt(largura.getText());
 				numD=Integer.parseInt(numDragoes.getText());
 				maze.logic.MazeBuilder charMaze;
+				if(alt > 17)
+					alt=17;
+				if(larg > 19)
+					larg=19;
 				try {
 				charMaze = new maze.logic.MazeBuilder(alt,larg,numD);
 				}
@@ -203,8 +213,11 @@ public class MainWindow {
 				handler.setVisible(true);
 				handler.setBounds(30, 115, 638, 723);
 				frame.getContentPane().add(handler);
+				
+				ShowStatus.setStatus(handler.objMaze);
 				handler.repaint();
 				showStatus.repaint();
+				
 			}
 		});
 		
@@ -221,6 +234,11 @@ public class MainWindow {
 		frame.getContentPane().add(btnTerminarPrograma);
 		
 	}
+	
+	public ShowStatus getStatus(){
+		return showStatus;
+	}
+	
 	
 	/**
 	 * 

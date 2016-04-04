@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import maze.logic.Exit;
 import maze.logic.General;
 import maze.logic.Maze.*;
+import maze.gui.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
@@ -22,6 +23,7 @@ public class GameHandler extends JPanel {
 	
 	public DragonType dragonType;
 	private MainWindow window;
+	private CreateMaze windowMaze;
 	public BufferedImage dragon, dragonAndSword, asleepDragonAndSword, asleepDragon, hero, armedHero, sword, wall, exit, none;
 	
 	GameHandler(final MainWindow window)
@@ -45,6 +47,27 @@ public class GameHandler extends JPanel {
 	}
 
 	
+	public GameHandler(CreateMaze window) {
+		// TODO Auto-generated constructor stub
+		this.windowMaze=window;
+		try {
+			hero = ImageIO.read(new File("res/hero.png"));
+			armedHero = ImageIO.read(new File("res/armedHero.png"));
+			dragon = ImageIO.read(new File("res/dragon.png"));
+			asleepDragon = ImageIO.read(new File("res/asleepDragon.png"));
+			asleepDragonAndSword = ImageIO.read(new File("res/asleepDragonAndSword.png"));
+			dragonAndSword = ImageIO.read(new File("res/dragonAndSword.png"));
+			sword = ImageIO.read(new File("res/sword.png"));
+			wall = ImageIO.read(new File("res/wall.png"));
+			exit = ImageIO.read(new File("res/exit.png"));
+			none = ImageIO.read(new File("res/none.png"));
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	public void paintComponent(Graphics gr) {
 		//labirinto
 		super.paintComponent(gr); // clears the background ...
@@ -54,7 +77,7 @@ public class GameHandler extends JPanel {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if(maze.get(new Point(i,j))==null)
-					gr.drawImage(none, j*imgDim, i*imgDim, null);
+				{}//gr.drawImage(none, j*imgDim, i*imgDim, null);
 				else switch(maze.get(new Point(i,j)).getSymbol())
 				{
 				case 'H':
@@ -93,6 +116,7 @@ public class GameHandler extends JPanel {
 				}
 			}
 		}//*/
+	
 	}
 	
 	public void play(Direction direcao)
@@ -125,6 +149,8 @@ public class GameHandler extends JPanel {
 		repaint();
 		ShowStatus.setStatus(objMaze);
 		repaint();
+		window.getStatus().repaint();
+		
 	}
 	
 	/*public String getDisplay() {

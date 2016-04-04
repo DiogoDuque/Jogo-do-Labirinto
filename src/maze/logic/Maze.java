@@ -29,7 +29,27 @@ public class Maze {
 	{
 		HeroDied, HeroUnarmed, HeroArmed, DragonDied, Victory
 	}
-	
+	public Maze(int x, int y){
+		status=MazeStatus.HeroUnarmed;
+		height = y+1;
+		width = x+1;
+		
+		maze = new HashMap<Point,General>();
+		dragons = new ArrayList<Dragon>();
+		for (int i = 0; i < y ; i++){
+				Wall wall = new Wall(i,0,maze);
+				maze.put(new Point(i,0),wall);
+				Wall wall1 = new Wall(i,x,maze);
+				maze.put(new Point(i,x),wall1);
+			}
+		for (int j = 0; j <= x; j++){
+		Wall wall2 = new Wall(0,y,maze);
+		maze.put(new Point(0,j),wall2);
+		Wall wall3 = new Wall(y,j,maze);
+		maze.put(new Point(y,j),wall3);
+	}
+		
+	}
 	public Maze(char[][] novomaze) {
 		status=MazeStatus.HeroUnarmed;
 

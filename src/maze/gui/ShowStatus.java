@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import maze.logic.Maze;
 import maze.logic.Maze.MazeStatus;
 
+@SuppressWarnings("serial")
 public class ShowStatus extends JPanel {
 	
 	public BufferedImage won;
@@ -42,7 +43,7 @@ public class ShowStatus extends JPanel {
 			
 	}
 	
-	public void paintComponent(Graphics gr) {
+	public  void paintComponent(Graphics gr) {
 		//estado de vitoria/derrota
 		super.paintComponent(gr); // clears the background ...		
 		if(gWon)
