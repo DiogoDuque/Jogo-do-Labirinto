@@ -28,6 +28,7 @@ public class MainWindow {
 	private GameHandler handler;
 	private ShowStatus showStatus;
 	private JFrame frame;
+	private JFrame frame2;
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
@@ -133,7 +134,7 @@ public class MainWindow {
 				showStatus.repaint();
 			}
 		});
-		btnCima.setBounds(750, 225, 100, 35);
+		btnCima.setBounds(750, 260, 100, 35);
 		frame.getContentPane().add(btnCima);
 		
 		btnEsquerda = new JButton("ESQUERDA");
@@ -145,7 +146,7 @@ public class MainWindow {
 				showStatus.repaint();
 			}
 		});
-		btnEsquerda.setBounds(690, 270, 100, 35);
+		btnEsquerda.setBounds(690, 305, 100, 35);
 		frame.getContentPane().add(btnEsquerda);
 		
 		btnDireita = new JButton("DIREITA");
@@ -157,7 +158,7 @@ public class MainWindow {
 				showStatus.repaint();
 			}
 		});
-		btnDireita.setBounds(810, 270, 100, 35);
+		btnDireita.setBounds(810, 305, 100, 35);
 		frame.getContentPane().add(btnDireita);
 		
 		btnBaixo = new JButton("BAIXO");
@@ -169,7 +170,7 @@ public class MainWindow {
 				showStatus.repaint();
 			}
 		});
-		btnBaixo.setBounds(750, 315, 100, 35);
+		btnBaixo.setBounds(750, 350, 100, 35);
 		frame.getContentPane().add(btnBaixo);
 		
 		lblMessageBox = new JLabel("Pode gerar um novo labirinto!");
@@ -222,6 +223,7 @@ public class MainWindow {
 				handler.repaint();
 				showStatus.repaint();
 				
+				
 			}
 		});
 		
@@ -241,11 +243,35 @@ public class MainWindow {
 		JButton btnCreateMaze = new JButton("Cria o teu labirinto!");
 		btnCreateMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				createMaze = new CreateMaze();
+				createMaze.main(null);
+				
 			}
 		});
 		btnCreateMaze.setBounds(722, 138 , 148, 38);
 		frame.getContentPane().add(btnCreateMaze);
+		
+		JButton btnPlay = new JButton("Joga com teu labirinto!");
+		btnPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				handler = CreateMaze.getHandler();
+				
+				handler.dragonType=(DragonType) tipoDragao.getSelectedItem();
+				handler.setVisible(true);
+				handler.setBounds(30, 115, 638, 723);
+				frame.getContentPane().add(handler);
+				
+				ShowStatus.setStatus(handler.objMaze);
+				handler.repaint();
+				showStatus.repaint();
+				btnBaixo.setEnabled(true);
+				btnCima.setEnabled(true);
+				btnEsquerda.setEnabled(true);
+				btnDireita.setEnabled(true);
+				
+			}
+		});
+		btnPlay.setBounds(722, 198 , 148, 38);
+		frame.getContentPane().add(btnPlay);
 		
 	}
 	

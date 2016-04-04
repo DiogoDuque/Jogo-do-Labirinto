@@ -23,7 +23,6 @@ public class GameHandler extends JPanel {
 	
 	public DragonType dragonType;
 	private MainWindow window;
-	private CreateMaze windowMaze;
 	public BufferedImage dragon, dragonAndSword, asleepDragonAndSword, asleepDragon, hero, armedHero, sword, wall, exit, none;
 	
 	GameHandler(final MainWindow window)
@@ -48,8 +47,6 @@ public class GameHandler extends JPanel {
 
 	
 	public GameHandler(CreateMaze window) {
-		// TODO Auto-generated constructor stub
-		this.windowMaze=window;
 		try {
 			hero = ImageIO.read(new File("res/hero.png"));
 			armedHero = ImageIO.read(new File("res/armedHero.png"));

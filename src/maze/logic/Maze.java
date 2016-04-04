@@ -15,6 +15,9 @@ public class Maze {
 	private Exit exit;
 	private MazeStatus status;
 
+	public void setHero(Hero hero){
+		this.hero=hero;
+	}
 	public enum DragonType
 	{
 		Static, RandomMovement, SleepingAndRandomMovement

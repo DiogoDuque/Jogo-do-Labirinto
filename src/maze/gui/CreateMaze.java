@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,16 +34,18 @@ import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class CreateMaze implements MouseListener {
+public class CreateMaze extends JFrame implements MouseListener {
 
 	private JFrame frame;
 	private JTextField altura;
 	private JTextField largura;
 	private JTextField numDragoes;
 	private maze.logic.Maze objMaze;
-	private GameHandler handler;
+	private static GameHandler handler;
 	private Type type;
 	private boolean isMazeValidated;
+
+	private static JFrame f;	
 	public enum Type
 	{
 		Dragon, Wall, Hero, Sword, Exit
@@ -82,7 +86,7 @@ public class CreateMaze implements MouseListener {
 		frame.setTitle("Cria o teu labirinto!");
 		frame.setBounds(20, 10, 1031, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		this.addMouseListener(tempRef);
 		handler = new GameHandler(tempRef);
 		frame.getContentPane().add(handler);
 		final JPanel panel = new JPanel();
@@ -176,7 +180,7 @@ public class CreateMaze implements MouseListener {
 		panel.add(lblTipoDeDrages);
 		
 		JButton btnPlay = new JButton("Jogar!");
-		btnPlay.setBounds(859, 408, 145, 74);
+		btnPlay.setBounds(859, 515, 145, 74);
 		panel.add(btnPlay);
 		panel_1.addMouseListener(tempRef);
 		
@@ -184,8 +188,8 @@ public class CreateMaze implements MouseListener {
 			public void actionPerformed(ActionEvent e) {
 				if(isMazeValidated){
 					
-				handler.objMaze=objMaze;
-					System.exit(0);}
+				
+				frame.setVisible(false);}
 					
 			}});
 		
@@ -244,6 +248,7 @@ public class CreateMaze implements MouseListener {
 		handler.objMaze.getMaze().put(new Point(y,x),wall);}
 		if(type == Type.Hero){
 			Hero hero = new Hero(y,x,handler.objMaze.getMaze());
+			handler.objMaze.setHero(hero);
 			handler.objMaze.getMaze().put(new Point(y,x),hero);}
 		if(type == Type.Sword){
 			Sword sword = new Sword(y,x,handler.objMaze.getMaze());
@@ -272,4 +277,24 @@ public class CreateMaze implements MouseListener {
 	public Maze getCreatedMaze(){
 		return objMaze;
 	}
+	public static GameHandler getHandler(){
+		return handler;
+	}
+
+//	public static void construct(int size) {
+//		f = new JFrame("Constroi o teu labirinto");
+//		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//		f.setPreferredSize(new Dimension(620, 670));
+//		f.getContentPane().setLayout(new BorderLayout());
+//		
+//		
+//		f.getContentPane().add(panel, BorderLayout.CENTER);
+//		f.getContentPane().add(panel2, BorderLayout.SOUTH);
+//		f.pack();
+//		f.setResizable(true);
+//		f.setLocationRelativeTo(null);
+//		f.setVisible(true);
+//		f.setFocusable(true);
+//		f.requestFocus();
+//	}
 }
